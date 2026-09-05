@@ -1,0 +1,1 @@
+export const dynamic="force-static";import type{MetadataRoute}from"next";export default function sitemap():MetadataRoute.Sitemap{return["","/privacy","/terms"].map(path=>({url:"https://lovelybakes-by-nash.akeelmunshi.chatgpt.site"+path,lastModified:new Date("2026-09-05"),changeFrequency:path?"yearly":"weekly",priority:path?.3:1}))}
