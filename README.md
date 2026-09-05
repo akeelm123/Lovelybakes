@@ -21,7 +21,7 @@ Open `http://localhost:3000`.
 npm run build
 ```
 
-The production build is a static export written to `out/`. Product and page content come from the approved public snapshot in `src/generated/public-snapshot.json`. The snapshot contains no administrator credentials, customer records, database configuration, or payment credentials.
+The production build uses Vercel's native Next.js output. Product and page content come from the approved public snapshot in `src/generated/public-snapshot.json`. The snapshot contains no administrator credentials, customer records, database configuration, or payment credentials.
 
 ## Hosting
 

@@ -9,15 +9,14 @@ Move the public Lovelybakes catalogue to Vercel while retaining `akeelm123/Lovel
 - Vercel project: `akeelm-projects/lovelybakes`
 - Production URL: `https://lovelybakes.vercel.app`
 - Source branch: `main`
-- Framework: Next.js 16 static export
+- Framework: Next.js 16 using Vercel's native build output
 - Previous Sites deployment retained as a rollback route during validation
 
 ## Validation
 
 - Locked dependency install completed with zero reported vulnerabilities.
 - Next.js production compilation and TypeScript validation passed.
-- All public routes were statically generated.
-- Vercel serves the generated `out/` directory through the committed `vercel.json` configuration.
+- All public routes are prerendered as static content within Vercel's native Next.js deployment output.
 - Canonical metadata, robots and sitemap target the Vercel production URL.
 - No runtime secrets or customer data are required by the public catalogue.
 
