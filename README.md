@@ -4,7 +4,7 @@ The public Lovelybakes product catalogue for celebration cakes, cupcakes, vintag
 
 ## Live site
 
-[lovelybakes-by-nash.akeelmunshi.chatgpt.site](https://lovelybakes-by-nash.akeelmunshi.chatgpt.site)
+[lovelybakes.vercel.app](https://lovelybakes.vercel.app)
 
 ## Local development
 
@@ -25,4 +25,6 @@ The production build is a static export written to `out/`. Product and page cont
 
 ## Hosting
 
-The project is configured for OpenAI Sites through `.openai/hosting.json`. The current public release uses Instagram enquiries; online payments and customer data collection remain disabled until production service credentials are configured.
+Vercel hosts the public application from this GitHub source. The current public release uses Instagram enquiries; online payments and customer data collection remain disabled until production service credentials are configured.
+
+The Release 2 hosting spike and rollback plan are documented in [`docs/release-2-vercel-spike.md`](docs/release-2-vercel-spike.md).

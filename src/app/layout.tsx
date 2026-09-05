@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://lovelybakes-by-nash.akeelmunshi.chatgpt.site"),
+  metadataBase: new URL("https://lovelybakes.vercel.app"),
   title: "Lovelybakes | Baked with heart in Singapore",
   description:
     "Home-baked celebration cakes, vintage piping and handmade toppers in Singapore.",
