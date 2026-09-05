@@ -17,6 +17,7 @@ Move the public Lovelybakes catalogue to Vercel while retaining `akeelm123/Lovel
 - Locked dependency install completed with zero reported vulnerabilities.
 - Next.js production compilation and TypeScript validation passed.
 - All public routes were statically generated.
+- Vercel serves the generated `out/` directory through the committed `vercel.json` configuration.
 - Canonical metadata, robots and sitemap target the Vercel production URL.
 - No runtime secrets or customer data are required by the public catalogue.
 
