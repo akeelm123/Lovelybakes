@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "eslint",
     "test": "vitest",
-    "export:public": "node --env-file=.env.local scripts/export-public-snapshot.mjs"
+    "export:public": "node --env-file=.env.local scripts/export-public-snapshot.mjs",
+    "seed:public": "node --env-file=.env.local scripts/seed-public-content.mjs"
   },
   "dependencies": {
     "jose": "^6.2.10",
