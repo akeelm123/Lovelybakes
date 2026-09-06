@@ -1,44 +1,69 @@
-## Latest update: Vercel-ready administrator MFA
+# Lovelybakes Release 2 implementation status
 
-Release 2 now includes database-backed administrator authenticator state in migration 007. It provides replay prevention and a distributed fifteen-minute lockout across Vercel instances. The authenticator secret remains in managed environment configuration and is never stored in PostgreSQL. Production activation requires a managed PostgreSQL database, applied migrations, Google OAuth values and Vercel environment variables.
+Last verified: 6 September 2026 against the stable UAT deployment at
+`https://lovelybakes-release-2.vercel.app`.
 
-## Latest update: Stripe payment boundary
+## Current environment
 
-Migration 006 introduces checkout idempotency and an immutable payment-event ledger. Checkout derives products, prices, delivery fees, fulfilment availability and booking dates on the server. Stripe-hosted card sessions, raw-body signed webhooks, exact order/currency reconciliation, duplicate-event handling, expiry cancellation and a non-indexed confirmation page are implemented. `/admin/payments` shows connection readiness. UAT remains disabled until both Stripe test credentials are supplied; live Stripe keys are blocked in UAT. PayNow and outbound email providers are not selected.
+Release 2 is deployed as a Vercel preview from the GitHub `release-2` branch.
+The stable UAT alias points to the latest preview deployment. Production remains
+on Release 1 and has not been promoted.
 
-## Latest update: ordering operations
+The UAT application uses managed Neon PostgreSQL, Vercel-managed environment
+configuration, Google OAuth plus authenticator MFA, and a Stripe sandbox. All
+seven migrations are applied. `UAT_MODE=true` prevents live Stripe keys from
+being used.
 
-Ordering rules, blackout dates, fulfilment methods and fees are editable under `/admin/ordering` and displayed by the UAT shop. `/admin/orders` provides synthetic-only UAT order creation, full item/customer details, ordered fulfilment transitions and durable status history. Live checkout and payment remain disabled; public forms still do not transmit or store customer details. Migration 005 adds `ordering_rule`, operational order columns and `order_status_event`.
+## Verified capabilities
 
-## Latest update: existing products and website content
+- Existing products, photographs, prices, descriptions, and publication states
+  can be edited in the owner studio.
+- Storefront content, navigation, hero content, FAQs, footer, social links, and
+  search metadata support draft, authenticated preview, and atomic publishing.
+- Collection and delivery availability, fees, minimum order, lead time, booking
+  window, and blackout dates are editable.
+- Google sign-in, the approved administrator allowlist, authenticator MFA,
+  replay prevention, and database-backed lockout operate on Vercel.
+- Stripe-hosted card checkout derives the catalogue, price, delivery charge,
+  currency, and total on the server. Card details do not enter Lovelybakes.
+- Signed Stripe webhooks reconcile the order, session, SGD currency, and exact
+  amount before changing order state. External event IDs are recorded once.
+- Administrators can move paid orders through preparing, ready, and fulfilled,
+  with optimistic concurrency and durable status history.
 
-Local UAT now connects to private PostgreSQL on 127.0.0.1:54329. Migrations 001–004 are applied. The six existing storefront creations are editable under /admin. Their prices remain UAT sample prices.
+## Controlled payment rehearsal
 
-/admin/content manages existing marketing copy, navigation labels, logo, hero/custom photographs, social links, FAQs, footer and search metadata. Save draft, authenticated draft preview and publish are implemented with optimistic concurrency and audit events. Published image access includes site sections; unpublished images remain admin-only. Checkout remains a preview.
+The following synthetic-only checks passed on 6 September 2026:
 
-Verification: editor interaction tests, API authorization and validation tests, isolated PostgreSQL roundtrips for draft/publish/conflicts/existing product edits, and build/lint checks. User must sign in again to verify the authenticated browser workflow in their session.
+| Scenario | Evidence | Result |
+| --- | --- | --- |
+| Successful payment | S$72.00 Stripe test-card checkout returned to the non-indexed confirmation page | Order changed from `pending_payment` to `paid` |
+| Checkout retry | The same checkout request key was submitted twice | One order and one hosted checkout session were created |
+| Fulfilment lifecycle | The paid order was advanced through preparing, ready, and fulfilled | Five ordered status-history records were retained |
+| Session expiry | A second unpaid Stripe sandbox session was explicitly expired | Signed webhook changed the order to `cancelled` |
+| Provider isolation | Both sessions reported Stripe test mode | No live charge occurred |
 
----
+Automated tests cover invalid signatures, duplicate events, payment/session
+identity mismatch, incorrect totals and currency, unpaid completion events,
+invalid status transitions, authorization, content editing, and checkout input
+validation. The latest recorded verification is 37 passing tests, with the two
+provider-dependent integration tests gated by environment configuration; lint
+and the production build pass.
 
-# Lovelybakes implementation status
+## Remaining release gates
 
-The cancelled squad run remains unchanged. This work continues the existing application directly under the recorded implementation approval; it is not a security gate pass or release sign-off.
+- Approve the real catalogue, prices, product descriptions, collection details,
+  delivery rules, blackout dates, and cancellation/refund policy. Current prices
+  are still labelled as UAT samples.
+- Complete and record storefront/admin desktop and mobile acceptance checks.
+- Select and implement outbound email, including delivery state, retries, and
+  owner-visible failures.
+- Approve privacy wording, retention duration, deletion procedure, and customer
+  support contact.
+- Add production monitoring, shared rate limits/WAF controls, backup/restore
+  evidence, and an administrator access-recovery procedure.
+- Complete the security and accessibility release reviews.
+- Obtain explicit CPO approval before merging, promoting Release 2 to production,
+  accepting real customer data, or installing live Stripe credentials.
 
-Implemented: sample catalog API, validated but disabled checkout boundary, OIDC/MFA protected admin order API, transactional fulfilment transitions, initial order storage migration and dictionary, cart persistence with validation and quantity limits, and drawer keyboard handling.
-
-Live checkout stays disabled because the catalog contains unapproved sample products. No personal checkout information is transmitted by the preview UI. No migration has been applied and no services provisioned.
-
-Remaining before a functioning commerce MVP:
-- Approved catalog, photography, prices, delivery charges and operational policies.
-- Payment provider configuration, signed webhook verification, amount/currency reconciliation, retry-safe order creation, refunds and payment expiry handling.
-- Connect Google OAuth and PostgreSQL to activate the implemented admin login, photo uploads and product editor; verify Google MFA claims end-to-end. Customer order detail views and durable order-status audit storage remain outstanding.
-- Email delivery with retries and notification status.
-- Shared rate limiting, WAF, security headers, analytics consent interface and measurement backend.
-- Migration verification against PostgreSQL, provider integration tests, desktop/mobile browser verification and security review.
-
-The existing process-local rate limiter and console audit helper are not production controls. Secrets and paid resource setup require separate authorization. Nothing has been deployed or pushed.
-
-
-Admin implementation: `/admin/login`, `/admin`, `/admin/preview`; protected product and photo APIs; draft/publish/archive controls; optimistic edit versions; transactional catalog audit; dynamic published storefront. Google client and database credentials are not supplied. No migration has been applied. Public preview deliberately disables uploads and saving. See admin-setup.md.
-
-Validation: lint and production build pass; 18 tests pass including identity allowlist, verified email/MFA, JWT audience/expiry/tampering, request origin, product price/image validation, unauthenticated product writes, and edit conflicts. Browser checks confirmed login redirect, product switching and responsive editor. Real Google login, database storage, upload persistence and published-product roundtrip still need configured services.
+PayNow remains deferred until a provider and operating model are approved.
