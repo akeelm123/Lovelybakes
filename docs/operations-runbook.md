@@ -18,6 +18,10 @@ The first attempt used an incompatible PostgreSQL 17 client and its process diag
 
 Migration 011 was applied before the application deployment. A synthetic S$64.00 Stripe test-mode order was paid through hosted Checkout, confirmed by the signed webhook, then cancelled and fully refunded through the authenticated admin workflow. The order ended in `cancelled`, the refund ledger recorded `succeeded`, Stripe reported the same S$64.00 SGD refund as `succeeded`, and three ordered lifecycle events remained. The admin flow uses an inline reason and explicit confirmation; an uncertain provider response retains the pending ledger row and reuses its Stripe idempotency key on retry.
 
+### Email-domain verification — 6 September 2026
+
+Resend reported `lovelybakestore.com` as verified in Tokyo (`ap-northeast-1`), with DKIM and both SPF checks verified. A single idempotent synthetic message from `Lovelybakes by Nash <orders@lovelybakestore.com>` to the approved owner address was accepted and subsequently reported as `delivered`. No customer order was created for this provider-level test. The application outbox remains the source of truth for order-message delivery and retry state.
+
 ## Rate limiting
 
 Migration 010 stores checkout counters in PostgreSQL so limits apply across Vercel instances. Bucket identifiers are hashed before storage. If the database is unavailable, checkout already fails closed; local development uses an in-process fallback. Add a scheduled cleanup for expired buckets before production launch.

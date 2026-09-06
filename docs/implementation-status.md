@@ -33,6 +33,9 @@ being used.
 - Administrators can cancel and fully refund unfulfilled Stripe test orders.
   Refund requests reserve the balance, use provider idempotency, and retain a
   durable ledger before the order is marked cancelled.
+- Resend is connected to the verified `lovelybakestore.com` sending domain.
+  DKIM and SPF verification pass, and a provider-level synthetic message from
+  `orders@lovelybakestore.com` reached the delivered state.
 
 ## Controlled payment rehearsal
 
@@ -60,9 +63,9 @@ and the production build pass.
   delivery rules, blackout dates, and cancellation/refund policy. Current prices
   are still labelled as UAT samples.
 - Complete and record storefront/admin desktop and mobile acceptance checks.
-- Select and implement outbound email, including delivery state, retries, and
-  owner-visible failures. The durable outbox and admin retry view are complete;
-  provider delivery is paused until Lovelybakes owns a sending domain.
+- Complete the application-level confirmation and cancellation email rehearsal.
+  The durable outbox, Resend delivery adapter, verified sender, delivery history,
+  and authenticated admin retry view are complete.
 - Approve privacy wording, final retention duration, and customer support contact.
   A versioned 180-day UAT default, terminal-order deletion workflow, and immutable
   erasure audit are implemented for review.
