@@ -58,6 +58,10 @@ Singleton operational rules for the storefront. UUID surrogate key; `rule_key` i
 ## order_status_event
 Immutable order fulfilment history. UUID surrogate key; foreign key to `customer_order`; previous/next statuses; UTC occurrence time. `actor_subject` is administrator PII and must be masked outside production. Customer-order additions: `fulfilment_method`, `requested_for_date` (calendar DATE), `order_notes` (customer PII), `delivery_fee_cents`, and optimistic `version`. Non-production orders must use synthetic identities and addresses.
 
+### `payment_refund`
+
+Durable Stripe refund ledger. UUID surrogate key; links to `customer_order`; records the amount in SGD, administrator-provided reason, provider reference, lifecycle status, bounded failure code, requesting administrator, and UTC timestamps. `reason` may contain customer context and `requested_by_subject` is administrator PII; both must be masked outside production. A pending row reserves the refundable balance before the provider call, and Stripe receives the row UUID as the idempotency key. An uncertain provider response retains the pending row so a retry uses the same key and cannot create a second refund.
+
 ## payment_event
 Immutable Stripe webhook-processing ledger. UUID surrogate key; unique `(provider, external_event_id)` enforces idempotency. Links to `customer_order`, records event type, processed/ignored outcome, and `occurred_at_utc`. External event IDs are sensitive transaction references and must be replaced in non-production copies. `customer_order.checkout_request_key` is a customer-generated UUID used only to prevent duplicate orders; it is confidential and unique.
 

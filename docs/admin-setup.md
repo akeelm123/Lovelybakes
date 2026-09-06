@@ -54,3 +54,5 @@ Delivery remains paused unless both `RESEND_API_KEY` and `EMAIL_FROM` are config
 ## Privacy and retention controls
 
 Migration 009 creates the versioned retention policy and immutable erasure audit. `/admin/privacy` defaults to 180 days and never deletes data automatically. An administrator can apply the policy only to fulfilled or cancelled orders after the configured period, or record a verified customer-request deletion for a terminal order. The transaction replaces customer identity, contact, address, notes, checkout key, and queued-email recipient. It retains order totals, item snapshots, statuses, Stripe references, and webhook IDs so financial audit and webhook idempotency remain intact. Active orders cannot be erased.
+
+Migration 011 adds the refund ledger. In UAT, an administrator may fully refund an unfulfilled Stripe test order from `/admin/orders`. The server reserves the outstanding balance, retrieves the Checkout Session, refunds its PaymentIntent with a stable idempotency key, records the provider reference, and cancels the order only after Stripe reports success. Live-mode refunds remain disabled.
