@@ -21,6 +21,10 @@ Versioned operational policy for customer-order retention. UUID surrogate key; s
 
 Immutable proof that customer contact and fulfilment details were erased from a terminal order. UUID surrogate key; links once to the retained order and records the reason, UTC execution time, and administrator subject. `executed_by_subject` is administrator PII and must be masked outside production. The event deliberately contains no deleted customer values.
 
+## api_rate_limit_bucket
+
+Shared abuse-control counters for horizontally scaled application instances. UUID surrogate key; stores only a SHA-256 bucket-key digest, request count, UTC reset time, and UTC update time. Raw network addresses are not stored. Expired rows may be deleted by routine maintenance.
+
 
 ## Catalog and administration
 
