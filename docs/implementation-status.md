@@ -63,11 +63,10 @@ and the production build pass.
   delivery rules, blackout dates, and cancellation/refund policy. Current prices
   are still labelled as UAT samples.
 - Complete and record storefront/admin desktop and mobile acceptance checks.
-- Verify automatic customer messaging with a new synthetic payment and status
-  transition. Order events now attempt due messages immediately after commit;
-  provider failure remains visible and retryable without reversing order state.
-  The earlier manual application rehearsal passed with both provider messages
-  reported as `delivered`.
+- Automatic order-event messaging is enabled. A new synthetic Stripe payment
+  moved to `paid`; its confirmation reached `sent` after one automatic attempt,
+  and Resend reported `delivered`. Provider failure remains visible and retryable
+  without reversing order state.
 - Approve privacy wording, final retention duration, and customer support contact.
   A versioned 180-day UAT default, terminal-order deletion workflow, and immutable
   erasure audit are implemented for review.

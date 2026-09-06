@@ -24,6 +24,8 @@ Resend reported `lovelybakestore.com` as verified in Tokyo (`ap-northeast-1`), w
 
 The synthetic refund order's application-generated `order_confirmed` and `order_cancelled` messages were then sent from the authenticated outbox. Each required one attempt, retained its Resend provider reference, and reached `sent` in the application ledger and `delivered` at Resend. The unrelated `example.test` notification remained pending and was not sent.
 
+Automatic delivery was enabled and rehearsed with a new synthetic S$96.00 Stripe test payment. The signed payment webhook committed the order as `paid`, created the versioned confirmation message, and delivered it without an administrator retry. The outbox reported `sent` after one attempt and Resend independently reported `delivered`. Payment state would remain committed if delivery failed; the outbox would retain the failure for owner retry.
+
 ## Rate limiting
 
 Migration 010 stores checkout counters in PostgreSQL so limits apply across Vercel instances. Bucket identifiers are hashed before storage. If the database is unavailable, checkout already fails closed; local development uses an in-process fallback. Add a scheduled cleanup for expired buckets before production launch.
