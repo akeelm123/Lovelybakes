@@ -1,5 +1,5 @@
 import "server-only";
-import { currentAdmin, sameOrigin } from "./admin-session";
+import { adminConfiguration, currentAdmin, sameOrigin } from "./admin-session";
 import { createRemoteJWKSet, jwtVerify, type JWTPayload } from "jose";
 
 export class AuthorizationError extends Error {
@@ -15,8 +15,9 @@ export async function requireAdmin(request: Request): Promise<JWTPayload> {
   const issuer = process.env.OIDC_ISSUER;
   const audience = process.env.OIDC_AUDIENCE;
   const jwksUrl = process.env.OIDC_JWKS_URL;
-  if (!issuer || !audience || !jwksUrl) throw new AuthorizationError(503, "Administrator authentication is not configured");
   const header = request.headers.get("authorization");
+  if (!header && adminConfiguration()) throw new AuthorizationError(401, "Administrator session required");
+  if (!issuer || !audience || !jwksUrl) throw new AuthorizationError(503, "Administrator authentication is not configured");
   if (!header?.startsWith("Bearer ")) throw new AuthorizationError(401, "Bearer token required");
   try {
     const { payload } = await jwtVerify(header.slice(7), createRemoteJWKSet(new URL(jwksUrl)), { issuer, audience });
