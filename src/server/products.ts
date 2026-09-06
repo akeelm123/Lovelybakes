@@ -10,8 +10,9 @@ export async function getProducts(publishedOnly = false): Promise<ManagedProduct
   return rows.map((row) => ({ ...row, currency: "SGD" })) as ManagedProduct[];
 }
 export async function storefrontCatalog() {
-  if (!databaseConfigured()) return { products: snapshot.products as ManagedProduct[], preview: false };
-  return { products: await getProducts(true), preview: process.env.UAT_MODE === "true" };
+  const preview = process.env.UAT_MODE === "true" || process.env.VERCEL_ENV === "preview";
+  if (!databaseConfigured()) return { products: snapshot.products as ManagedProduct[], preview };
+  return { products: await getProducts(true), preview };
 }
 export async function saveProduct(input: ProductInput, actor: string, id: string = randomUUID(), version?: number) {
   const sql = database();
