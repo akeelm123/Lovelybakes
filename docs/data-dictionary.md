@@ -9,6 +9,10 @@ PostgreSQL OLTP storage. Apply versioned migration files through the deployment 
 
 Both tables use created_at_utc (TIMESTAMPTZ); customer_order also has updated_at_utc. Monetary values are integer Singapore cents. customer_order_item.customer_order_id references customer_order. All customer contact and address fields must be replaced with synthetic values before any non-production import; replace payment references too. Use synthetic-only test fixtures. Retention and deletion policy remain subject to business/privacy review.
 
+## customer_notification
+
+Durable transactional-email outbox and delivery history. UUID surrogate key; links to `customer_order`; stores the versioned template key, recipient, delivery state, attempt count, next retry time, provider reference, bounded error code, and UTC lifecycle timestamps. `recipient_email` is PII and `provider_reference` is sensitive. Both must be masked in non-production copies. The unique order/template/version key prevents duplicate customer messages.
+
 
 ## Catalog and administration
 

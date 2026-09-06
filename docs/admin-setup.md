@@ -44,3 +44,9 @@ Checkout and sign-in system messages remain controlled by application behavior. 
 
 ## Stripe payment connection
 Migration 006 adds checkout request idempotency and the payment-event ledger. UAT requires a Stripe test secret (`sk_test_...`), a webhook signing secret, and `PAYMENTS_ENABLED=true`; a live key is rejected while `UAT_MODE=true`. Configure Stripe to send `checkout.session.completed` and `checkout.session.expired` to `/api/stripe/webhook`. The handler validates the raw-body signature, checks session/order identity, SGD currency and exact total, records each external event once, and then advances the order. Do not enable payments until the `/admin/payments` readiness screen is complete and the signed test checkout passes. No card data enters Lovelybakes.
+
+## Customer email delivery
+
+Migration 008 adds the customer notification outbox. Payment and fulfilment state changes enqueue versioned messages in the same database transaction as the order change. The unique order/template/version key prevents duplicate messages. `/admin/notifications` shows pending, sent and failed messages and allows an administrator to retry delivery.
+
+Delivery remains paused unless both `RESEND_API_KEY` and `EMAIL_FROM` are configured. `EMAIL_FROM` must use a sender or domain verified by the chosen provider. Provider calls use the notification UUID as an idempotency key; failed attempts retain a bounded error code and an exponential next-attempt time. No public endpoint can send or retry email. Connect a sandbox provider and test only synthetic recipients before approving customer delivery.

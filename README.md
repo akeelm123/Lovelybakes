@@ -25,6 +25,7 @@ Copy `.env.example` to `.env.local`, use private values, and apply the migration
 - Order and fulfilment management
 - PostgreSQL persistence and audit records
 - Stripe test-checkout and signed-webhook boundary
+- Versioned customer email outbox, delivery history and admin retry controls
 - Database-backed MFA replay prevention and distributed lockout for Vercel
 
 ## Validation
@@ -33,7 +34,7 @@ Copy `.env.example` to `.env.local`, use private values, and apply the migration
 npm run build
 ```
 
-The production build uses Vercel's native Next.js output. Product and page content come from the approved public snapshot in `src/generated/public-snapshot.json`. The snapshot contains no administrator credentials, customer records, database configuration, or payment credentials.
+The production build uses Vercel's native Next.js output. Product and page content come from the approved public snapshot in `src/generated/public-snapshot.json`. The snapshot contains no administrator credentials, customer records, database configuration, payment credentials, or email-provider credentials.
 
 ## Hosting
 
