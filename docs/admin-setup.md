@@ -51,6 +51,8 @@ Migration 008 adds the customer notification outbox. Payment and fulfilment stat
 
 Delivery remains paused unless both `RESEND_API_KEY` and `EMAIL_FROM` are configured. `EMAIL_FROM` must use a sender or domain verified by the chosen provider. Provider calls use the notification UUID as an idempotency key; failed attempts retain a bounded error code and an exponential next-attempt time. No public endpoint can send or retry email. Connect a sandbox provider and test only synthetic recipients before approving customer delivery.
 
+When email is configured, a committed payment, expiry, refund, or administrator fulfilment event immediately attempts all due messages for that order. Provider failure never reverses the order event: the failed message and its next-attempt time remain visible in `/admin/notifications` for owner retry. Replayed Stripe webhooks also retry any due message with the same provider idempotency key. Synthetic orders created by the admin test button remain queued and are not sent automatically.
+
 ## Privacy and retention controls
 
 Migration 009 creates the versioned retention policy and immutable erasure audit. `/admin/privacy` defaults to 180 days and never deletes data automatically. An administrator can apply the policy only to fulfilled or cancelled orders after the configured period, or record a verified customer-request deletion for a terminal order. The transaction replaces customer identity, contact, address, notes, checkout key, and queued-email recipient. It retains order totals, item snapshots, statuses, Stripe references, and webhook IDs so financial audit and webhook idempotency remain intact. Active orders cannot be erased.

@@ -63,10 +63,11 @@ and the production build pass.
   delivery rules, blackout dates, and cancellation/refund policy. Current prices
   are still labelled as UAT samples.
 - Complete and record storefront/admin desktop and mobile acceptance checks.
-- Approve the operational policy for automatic versus owner-triggered customer
-  messages. The application-level confirmation and cancellation rehearsal passed:
-  both outbox records reached `sent` after one attempt and Resend reported both
-  provider messages as `delivered`.
+- Verify automatic customer messaging with a new synthetic payment and status
+  transition. Order events now attempt due messages immediately after commit;
+  provider failure remains visible and retryable without reversing order state.
+  The earlier manual application rehearsal passed with both provider messages
+  reported as `delivered`.
 - Approve privacy wording, final retention duration, and customer support contact.
   A versioned 180-day UAT default, terminal-order deletion workflow, and immutable
   erasure audit are implemented for review.
