@@ -63,9 +63,10 @@ and the production build pass.
   delivery rules, blackout dates, and cancellation/refund policy. Current prices
   are still labelled as UAT samples.
 - Complete and record storefront/admin desktop and mobile acceptance checks.
-- Complete the application-level confirmation and cancellation email rehearsal.
-  The durable outbox, Resend delivery adapter, verified sender, delivery history,
-  and authenticated admin retry view are complete.
+- Approve the operational policy for automatic versus owner-triggered customer
+  messages. The application-level confirmation and cancellation rehearsal passed:
+  both outbox records reached `sent` after one attempt and Resend reported both
+  provider messages as `delivered`.
 - Approve privacy wording, final retention duration, and customer support contact.
   A versioned 180-day UAT default, terminal-order deletion workflow, and immutable
   erasure audit are implemented for review.

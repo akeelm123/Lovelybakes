@@ -22,6 +22,8 @@ Migration 011 was applied before the application deployment. A synthetic S$64.00
 
 Resend reported `lovelybakestore.com` as verified in Tokyo (`ap-northeast-1`), with DKIM and both SPF checks verified. A single idempotent synthetic message from `Lovelybakes by Nash <orders@lovelybakestore.com>` to the approved owner address was accepted and subsequently reported as `delivered`. No customer order was created for this provider-level test. The application outbox remains the source of truth for order-message delivery and retry state.
 
+The synthetic refund order's application-generated `order_confirmed` and `order_cancelled` messages were then sent from the authenticated outbox. Each required one attempt, retained its Resend provider reference, and reached `sent` in the application ledger and `delivered` at Resend. The unrelated `example.test` notification remained pending and was not sent.
+
 ## Rate limiting
 
 Migration 010 stores checkout counters in PostgreSQL so limits apply across Vercel instances. Bucket identifiers are hashed before storage. If the database is unavailable, checkout already fails closed; local development uses an in-process fallback. Add a scheduled cleanup for expired buckets before production launch.
