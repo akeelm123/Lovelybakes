@@ -13,6 +13,14 @@ Both tables use created_at_utc (TIMESTAMPTZ); customer_order also has updated_at
 
 Durable transactional-email outbox and delivery history. UUID surrogate key; links to `customer_order`; stores the versioned template key, recipient, delivery state, attempt count, next retry time, provider reference, bounded error code, and UTC lifecycle timestamps. `recipient_email` is PII and `provider_reference` is sensitive. Both must be masked in non-production copies. The unique order/template/version key prevents duplicate customer messages.
 
+## data_retention_policy
+
+Versioned operational policy for customer-order retention. UUID surrogate key; stores a bounded retention period, UTC update time, and the administrator subject that changed it. `updated_by_subject` is administrator PII and must be masked outside production.
+
+## customer_data_erasure_event
+
+Immutable proof that customer contact and fulfilment details were erased from a terminal order. UUID surrogate key; links once to the retained order and records the reason, UTC execution time, and administrator subject. `executed_by_subject` is administrator PII and must be masked outside production. The event deliberately contains no deleted customer values.
+
 
 ## Catalog and administration
 

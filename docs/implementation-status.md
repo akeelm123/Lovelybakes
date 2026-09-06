@@ -57,9 +57,11 @@ and the production build pass.
   are still labelled as UAT samples.
 - Complete and record storefront/admin desktop and mobile acceptance checks.
 - Select and implement outbound email, including delivery state, retries, and
-  owner-visible failures.
-- Approve privacy wording, retention duration, deletion procedure, and customer
-  support contact.
+  owner-visible failures. The durable outbox and admin retry view are complete;
+  provider delivery is paused until Lovelybakes owns a sending domain.
+- Approve privacy wording, final retention duration, and customer support contact.
+  A versioned 180-day UAT default, terminal-order deletion workflow, and immutable
+  erasure audit are implemented for review.
 - Add production monitoring, shared rate limits/WAF controls, backup/restore
   evidence, and an administrator access-recovery procedure.
 - Complete the security and accessibility release reviews.

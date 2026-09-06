@@ -1,0 +1,1 @@
+import{expect,it}from"vitest";import{retentionPolicySchema}from"./privacy";it("keeps retention within the supported policy range",()=>{expect(retentionPolicySchema.safeParse({retentionDays:180,version:1}).success).toBe(true);expect(retentionPolicySchema.safeParse({retentionDays:7,version:1}).success).toBe(false)});
