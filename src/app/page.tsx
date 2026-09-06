@@ -10,5 +10,6 @@ export async function generateMetadata() {
 }
 export default async function Home() {
   const [{ products, preview }, content, orderingRule] = await Promise.all([storefrontCatalog(), publishedContent(), getOrderingRule()]);
-  return <Storefront products={products} preview={preview} content={content} orderingRule={orderingRule} commerceEnabled={preview || paymentsEnabled()} />;
+  const checkoutEnabled = paymentsEnabled();
+  return <Storefront products={products} preview={preview} content={content} orderingRule={orderingRule} commerceEnabled={preview || checkoutEnabled} checkoutEnabled={checkoutEnabled} />;
 }
