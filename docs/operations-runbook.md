@@ -14,6 +14,10 @@ A PostgreSQL 18 custom-format logical backup was restored into an isolated tempo
 
 The first attempt used an incompatible PostgreSQL 17 client and its process diagnostic exposed the UAT connection URL. The attempt stopped before a restore database was created. The database role password was rotated immediately, the private local configuration and Release 2 branch secret were replaced, Release 2 was redeployed, and health was reverified. The disclosed credential is invalid. Future restore commands pass passwords through `PGPASSWORD` and never place connection URLs in command arguments.
 
+### Refund rehearsal — 6 September 2026
+
+Migration 011 was applied before the application deployment. A synthetic S$64.00 Stripe test-mode order was paid through hosted Checkout, confirmed by the signed webhook, then cancelled and fully refunded through the authenticated admin workflow. The order ended in `cancelled`, the refund ledger recorded `succeeded`, Stripe reported the same S$64.00 SGD refund as `succeeded`, and three ordered lifecycle events remained. The admin flow uses an inline reason and explicit confirmation; an uncertain provider response retains the pending ledger row and reuses its Stripe idempotency key on retry.
+
 ## Rate limiting
 
 Migration 010 stores checkout counters in PostgreSQL so limits apply across Vercel instances. Bucket identifiers are hashed before storage. If the database is unavailable, checkout already fails closed; local development uses an in-process fallback. Add a scheduled cleanup for expired buckets before production launch.

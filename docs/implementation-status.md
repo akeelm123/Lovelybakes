@@ -11,7 +11,7 @@ on Release 1 and has not been promoted.
 
 The UAT application uses managed Neon PostgreSQL, Vercel-managed environment
 configuration, Google OAuth plus authenticator MFA, and a Stripe sandbox. All
-seven migrations are applied. `UAT_MODE=true` prevents live Stripe keys from
+eleven migrations are applied. `UAT_MODE=true` prevents live Stripe keys from
 being used.
 
 ## Verified capabilities
@@ -30,6 +30,9 @@ being used.
   amount before changing order state. External event IDs are recorded once.
 - Administrators can move paid orders through preparing, ready, and fulfilled,
   with optimistic concurrency and durable status history.
+- Administrators can cancel and fully refund unfulfilled Stripe test orders.
+  Refund requests reserve the balance, use provider idempotency, and retain a
+  durable ledger before the order is marked cancelled.
 
 ## Controlled payment rehearsal
 
@@ -42,11 +45,12 @@ The following synthetic-only checks passed on 6 September 2026:
 | Fulfilment lifecycle | The paid order was advanced through preparing, ready, and fulfilled | Five ordered status-history records were retained |
 | Session expiry | A second unpaid Stripe sandbox session was explicitly expired | Signed webhook changed the order to `cancelled` |
 | Provider isolation | Both sessions reported Stripe test mode | No live charge occurred |
+| Refund | A new S$64.00 sandbox payment was cancelled from the authenticated admin workflow | Stripe and the refund ledger both reported `succeeded`; the order became `cancelled` |
 
 Automated tests cover invalid signatures, duplicate events, payment/session
 identity mismatch, incorrect totals and currency, unpaid completion events,
 invalid status transitions, authorization, content editing, and checkout input
-validation. The latest recorded verification is 37 passing tests, with the two
+validation. The latest recorded verification is 41 passing tests, with the two
 provider-dependent integration tests gated by environment configuration; lint
 and the production build pass.
 
