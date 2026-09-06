@@ -1,0 +1,20 @@
+import React from "react";
+import { afterEach, expect, it, vi } from "vitest";
+import { cleanup, fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { ProductEditor } from "./product-editor";
+import { sampleProducts } from "@/lib/catalog";
+vi.mock("next/image", () => ({ default: () => null }));
+afterEach(() => { cleanup(); vi.unstubAllGlobals(); });
+it("selects an existing product and patches its identity and version", async () => {
+  const product = { ...sampleProducts[0], id: "be5e0a1d-c2be-479f-bd1b-7598fba2c55f", version: 3, featured: false, status: "published" };
+  const fetcher = vi.fn().mockResolvedValueOnce(Response.json({ products: [product] })).mockResolvedValueOnce(Response.json({ id: product.id })).mockResolvedValueOnce(Response.json({ products: [{ ...product, name: "Edited cake", version: 4 }] }));
+  vi.stubGlobal("fetch", fetcher);
+  render(<ProductEditor />);
+  fireEvent.click(await screen.findByRole("button", { name: /Vintage Pink.*Edit/ }));
+  expect(screen.getByLabelText("Product name")).toHaveValue("Vintage Pink");
+  fireEvent.change(screen.getByLabelText("Product name"), { target: { value: "Edited cake" } });
+  fireEvent.click(screen.getByRole("button", { name: "Save & publish" }));
+  await waitFor(() => expect(screen.getByRole("status")).toHaveTextContent("Published"));
+  expect(fetcher.mock.calls[1][1].method).toBe("PATCH");
+  expect(JSON.parse(fetcher.mock.calls[1][1].body)).toMatchObject({ id: product.id, version: 3, name: "Edited cake" });
+});

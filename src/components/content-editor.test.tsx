@@ -1,0 +1,28 @@
+import React from "react";
+import { afterEach, expect, it, vi } from "vitest";
+import { cleanup, fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { ContentEditor } from "./content-editor";
+import { defaultContent } from "@/domain/site-content";
+vi.mock("next/image", () => ({ default: () => null }));
+afterEach(() => { cleanup(); vi.unstubAllGlobals(); });
+it("edits existing content across sections and saves a draft before publishing", async () => {
+  const fetcher = vi.fn().mockResolvedValueOnce(Response.json({ version: 1 })).mockResolvedValueOnce(Response.json({ version: 2 }));
+  vi.stubGlobal("fetch", fetcher);
+  render(<ContentEditor initialContent={defaultContent} initialVersion={0} />);
+  expect(screen.getByLabelText("Announcement")).toHaveValue(defaultContent.announcement);
+  fireEvent.change(screen.getByLabelText("Announcement"), { target: { value: "Updated announcement" } });
+  fireEvent.click(screen.getByRole("button", { name: "Hero" }));
+  fireEvent.change(screen.getByLabelText("Heading"), { target: { value: "Updated hero" } });
+  fireEvent.click(screen.getByRole("button", { name: "Save draft" }));
+  await waitFor(() => expect(screen.getByRole("status")).toHaveTextContent("Draft saved"));
+  let payload = JSON.parse(fetcher.mock.calls[0][1].body);
+  expect(payload.content.announcement).toBe("Updated announcement");
+  expect(payload.content.heroTitle).toBe("Updated hero");
+  expect(payload.publish).toBe(false);
+  expect(payload.version).toBe(0);
+  fireEvent.click(screen.getByRole("button", { name: "Publish website" }));
+  await waitFor(() => expect(screen.getByRole("status")).toHaveTextContent("Published"));
+  payload = JSON.parse(fetcher.mock.calls[1][1].body);
+  expect(payload.publish).toBe(true);
+  expect(payload.version).toBe(1);
+});

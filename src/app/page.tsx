@@ -1,1 +1,14 @@
-import snapshot from "@/generated/public-snapshot.json";import { Storefront } from "@/components/storefront";import type { Product } from "@/lib/catalog";import type { SiteContent } from "@/domain/site-content";import type { OrderingRule } from "@/domain/ordering";export default function Home(){return <Storefront products={snapshot.products as Product[]} content={snapshot.content as SiteContent} orderingRule={snapshot.orderingRule as OrderingRule} preview={false} commerceEnabled={false}/>}
+import { Storefront } from "@/components/storefront";
+import { storefrontCatalog } from "@/server/products";
+import { publishedContent } from "@/server/site-content";
+import { getOrderingRule } from "@/server/ordering";
+import { paymentsEnabled } from "@/server/payments";
+export const dynamic = "force-dynamic";
+export async function generateMetadata() {
+  const content = await publishedContent();
+  return { title: content.seoTitle, description: content.seoDescription };
+}
+export default async function Home() {
+  const [{ products, preview }, content, orderingRule] = await Promise.all([storefrontCatalog(), publishedContent(), getOrderingRule()]);
+  return <Storefront products={products} preview={preview} content={content} orderingRule={orderingRule} commerceEnabled={paymentsEnabled()} />;
+}

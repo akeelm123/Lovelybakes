@@ -1,24 +1,25 @@
 import type { Metadata } from "next";
+import { Fraunces, Inter } from "next/font/google";
 import "./globals.css";
 
+const inter = Inter({
+  variable: "--font-sans",
+  subsets: ["latin"],
+});
+
+const fraunces = Fraunces({
+  variable: "--font-display",
+  subsets: ["latin"],
+});
+
 export const metadata: Metadata = {
-  metadataBase: new URL("https://lovelybakes.vercel.app"),
   title: "Lovelybakes | Baked with heart in Singapore",
-  description:
-    "Home-baked celebration cakes, vintage piping and handmade toppers in Singapore.",
-  alternates: { canonical: "/" },
-  openGraph: {
-    title: "Lovelybakes | Baked with heart in Singapore",
-    description:
-      "Home-baked celebration cakes, vintage piping and handmade toppers in Singapore.",
-    type: "website",
-    locale: "en_SG",
-  },
+  description: "Small-batch cakes, tarts and celebration bakes, handcrafted in Singapore.",
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="en">
+    <html lang="en" className={`${inter.variable} ${fraunces.variable}`}>
       <body>{children}</body>
     </html>
   );

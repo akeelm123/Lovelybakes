@@ -1,1 +1,1 @@
-export const dynamic="force-static";import type{MetadataRoute}from"next";export default function robots():MetadataRoute.Robots{return{rules:{userAgent:"*",allow:"/"},sitemap:"https://lovelybakes.vercel.app/sitemap.xml"}}
+import type { MetadataRoute } from "next";export default function robots():MetadataRoute.Robots{return{rules:[{userAgent:"*",allow:["/","/privacy","/terms"],disallow:["/admin/","/api/","/order/"]}],sitemap:process.env.PUBLIC_APP_URL?`${process.env.PUBLIC_APP_URL}/sitemap.xml`:undefined}}

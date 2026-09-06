@@ -1,6 +1,6 @@
-# Lovelybakes by Nash
+# Lovelybakes by Nash — Release 2
 
-The public Lovelybakes product catalogue for celebration cakes, cupcakes, vintage piping, and handmade toppers in Singapore.
+The Lovelybakes storefront and owner studio for celebration cakes, cupcakes, vintage piping, and handmade toppers in Singapore.
 
 ## Live site
 
@@ -14,6 +14,18 @@ npm run dev
 ```
 
 Open `http://localhost:3000`.
+
+Copy `.env.example` to `.env.local`, use private values, and apply the migrations in numerical order to PostgreSQL. Never commit `.env.local` or authenticator enrollment material.
+
+## Release 2 scope
+
+- Google administrator sign-in with authenticator step-up
+- Product creation, editing, publication and image replacement
+- Editable storefront content and ordering rules
+- Order and fulfilment management
+- PostgreSQL persistence and audit records
+- Stripe test-checkout and signed-webhook boundary
+- Database-backed MFA replay prevention and distributed lockout for Vercel
 
 ## Validation
 
