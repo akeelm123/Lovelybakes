@@ -1,0 +1,1 @@
+import{z}from"zod";export const retentionPolicySchema=z.object({retentionDays:z.number().int().min(30).max(2555),version:z.number().int().positive()}).strict();export const erasureRequestSchema=z.object({orderId:z.uuid(),reason:z.enum(["retention_policy","customer_request"])}).strict();

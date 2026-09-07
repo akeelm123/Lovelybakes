@@ -1,0 +1,2 @@
+import {describe,expect,it} from "vitest";import {renderNotification} from "./notification";
+describe("notification templates",()=>{it("renders a stable customer-safe confirmation",()=>{const value=renderNotification("order_confirmed",{customerName:"Nash <script>",orderId:"12345678-aaaa",totalCents:7200,requestedForDate:"2026-09-13",fulfilmentMethod:"collection"});expect(value.subject).toContain("confirmed");expect(value.text).toContain("72.00");expect(value.html).not.toContain("<script>");expect(value.html).toContain("Nash &lt;script&gt;")})});
