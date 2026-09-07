@@ -43,10 +43,10 @@ Use this checklist against the Release 2 UAT site before production promotion. A
 ## Customer communications
 
 - [ ] Approve the confirmation, preparing, ready, fulfilled and cancelled email wording.
-- [ ] Confirm `Lovelybakes by Nash <orders@lovelybakestore.com>` as the sender identity.
-- [ ] Confirm automatic messages after order events; failed messages remain visible for owner retry.
+- [x] Confirm `Lovelybakes by Nash <orders@lovelybakestore.com>` as the sender identity.
+- [x] Confirm automatic messages after order events; failed messages remain visible for owner retry.
 - [ ] Confirm collection/delivery instructions in email match the Ordering screen.
-- [ ] Confirm replies and support requests reach a monitored inbox or published contact route.
+- [x] Route replies through `orders@lovelybakestore.com`; the admin can change the reply address for future messages.
 
 ## Legal and privacy
 
