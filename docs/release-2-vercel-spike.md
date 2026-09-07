@@ -27,3 +27,9 @@ Vercel builds a checked-out GitHub commit. The Vercel GitHub app still needs rep
 ## Rollback
 
 Use the previous successful Vercel deployment or temporarily direct customers to the retained Sites URL. Source rollback is performed with a new reverting commit on `main`; history must not be rewritten.
+
+## Registered domain
+
+`lovelybakestore.com` and `www.lovelybakestore.com` are assigned to the Vercel project. GoDaddy remains the authoritative DNS provider so the Resend mail records can be retained there. The apex uses Vercel's preferred `216.198.79.1` and `64.29.17.1` A records; `www` uses the project-specific Vercel CNAME and permanently redirects to the apex with HTTP 308. Vercel reports both domains correctly configured, HTTPS succeeds, and the authoritative Resend MX, SPF and DKIM records remain intact.
+
+The custom domain currently follows the project's production deployment. Release 2 remains on its separate UAT alias until final business acceptance and explicit production-promotion approval.

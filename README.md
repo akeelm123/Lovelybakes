@@ -41,3 +41,5 @@ The production build uses Vercel's native Next.js output. Product and page conte
 Vercel hosts the public application from this GitHub source. The current public release uses Instagram enquiries; online payments and customer data collection remain disabled until production service credentials are configured.
 
 The Release 2 hosting spike and rollback plan are documented in [`docs/release-2-vercel-spike.md`](docs/release-2-vercel-spike.md).
+
+Final catalogue, fulfilment, customer-communication, legal, domain and launch decisions are tracked in [`docs/final-business-content-checklist.md`](docs/final-business-content-checklist.md).
