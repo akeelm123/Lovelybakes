@@ -64,7 +64,7 @@ Use this checklist against the Release 2 UAT site before production promotion. A
 - [ ] Approve the page title and search description.
 - [ ] Confirm `lovelybakestore.com` as the canonical domain and `www.lovelybakestore.com` as its redirect alias.
 - [x] Verify the apex domain, `www`, HTTPS certificate, robots file and sitemap after DNS propagation (completed 7 September 2026).
-- [ ] Add `https://lovelybakestore.com/api/auth/callback` to the Google OAuth client before production admin access uses the custom domain.
+- [x] Add `https://lovelybakestore.com/api/auth/callback` to the Google OAuth client before production admin access uses the custom domain.
 
 ## Final acceptance record
 
