@@ -13,8 +13,18 @@ const fraunces = Fraunces({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(process.env.PUBLIC_APP_URL ?? "https://lovelybakestore.com"),
   title: "Lovelybakes | Baked with heart in Singapore",
   description: "Small-batch cakes, tarts and celebration bakes, handcrafted in Singapore.",
+  alternates: { canonical: "/" },
+  openGraph: {
+    type: "website",
+    locale: "en_SG",
+    url: "/",
+    siteName: "Lovelybakes by Nash",
+    title: "Lovelybakes | Baked with heart in Singapore",
+    description: "Small-batch cakes, tarts and celebration bakes, handcrafted in Singapore.",
+  },
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

@@ -8,7 +8,7 @@ html { scroll-behavior: smooth; }
 body { margin: 0; color: var(--ink); background: var(--cream); font-family: var(--font-sans), sans-serif; -webkit-font-smoothing: antialiased; }
 button, input, textarea { font: inherit; }
 button, a { -webkit-tap-highlight-color: transparent; }
-button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visible { outline: 3px solid #2f6fbd; outline-offset: 3px; }
+button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visible, select:focus-visible, summary:focus-visible { outline: 3px solid #2f6fbd; outline-offset: 3px; }
 .site-header { position: sticky; top: 0; z-index: 20; display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: .9rem clamp(1rem, 4vw, 4rem); border-bottom: 1px solid rgb(234 223 216 / 75%); background: rgb(255 250 244 / 92%); backdrop-filter: blur(14px); }
 .brand { color: inherit; text-decoration: none; }
 .brand strong { display: block; font: 700 1.35rem/1 var(--font-display), serif; }

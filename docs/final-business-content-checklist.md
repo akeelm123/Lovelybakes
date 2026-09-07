@@ -63,7 +63,7 @@ Use this checklist against the Release 2 UAT site before production promotion. A
 - [ ] Approve the Instagram link and every footer/navigation link.
 - [ ] Approve the page title and search description.
 - [ ] Confirm `lovelybakestore.com` as the canonical domain and `www.lovelybakestore.com` as its redirect alias.
-- [ ] Verify the apex domain, `www`, HTTPS certificate, robots file and sitemap after DNS propagation.
+- [x] Verify the apex domain, `www`, HTTPS certificate, robots file and sitemap after DNS propagation (completed 7 September 2026).
 - [ ] Add `https://lovelybakestore.com/api/auth/callback` to the Google OAuth client before production admin access uses the custom domain.
 
 ## Final acceptance record
@@ -81,3 +81,15 @@ Owner: ____________________  Date: ____________________
 Notes or required corrections:
 
 ______________________________________________________________________________
+
+## Technical acceptance evidence
+
+Automated browser review completed on 7 September 2026 against the Release 2 UAT deployment:
+
+- Storefront, privacy, terms and admin-login routes returned successfully on desktop and mobile viewports.
+- Each audited page had one visible `h1`, a `main` landmark, valid heading order, no unnamed interactive controls, no missing image alternatives and no horizontal overflow.
+- The real cart and checkout drawer passed keyboard checks: focus entered and remained in the modal, Escape closed it, and focus returned to the bag control.
+- Checkout fields were labelled, required fields were exposed to the browser, and the mobile drawer had no horizontal overflow.
+- Security headers, HTTPS, `robots.txt` and `sitemap.xml` were present. The custom apex domain returned 200 and `www` redirected permanently to the apex.
+
+This evidence covers technical behavior. The owner acceptance and business decisions above remain open until explicitly approved.
