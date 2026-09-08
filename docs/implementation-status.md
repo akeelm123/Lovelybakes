@@ -1,5 +1,49 @@
 # Lovelybakes Release 2 implementation status
 
+## Production update — 8 September 2026
+
+Release 2 is live at https://lovelybakestore.com on Vercel, with source in
+`akeelm123/Lovelybakes`. PR #3 merged as `fbe313c`; production deployment
+`dpl_7UWoou7eeeG1cvsUD4jtwTY3votc` reached Ready with the custom domain attached.
+Storefront returned HTTP 200 and `/api/health` returned `{"status":"ok"}`.
+
+The CPO confirmed a real S$32 card payment. The authenticated admin subsequently
+showed the rehearsal order as Cancelled, Refunded S$32.00, and Workflow complete.
+Resend reported its cancellation email delivered on 8 September 2026.
+This verifies the application refund ledger and email delivery; credit posting
+on the cardholder's bank statement was not independently inspected.
+
+Business content was accepted by the CPO for launch with later editing through
+admin. Live credentials and production release actions were explicitly approved
+in the conversation. This document records observed evidence, not a formal
+squad sign-off artifact. The squad planning run remains completed through
+`discovery` and `design_and_architecture`; no squad gates have been evaluated.
+
+## Current implementation increment (not deployed)
+
+Refund eligibility now requires the checkout session mode to match the active
+Stripe refund mode. The admin hides ineligible actions; the server rejects them
+before creating a pending refund ledger row. Disabled refunds reject all modes.
+Historical test orders remain intact.
+
+## Remaining operational work
+
+- Establish owner alert delivery and verify checkout/webhook/email failure alerts.
+- Confirm the production backup restore window and schedule a masked restore drill;
+  the September 6 rehearsal below covered UAT only.
+- Implement cleanup of expired rate-limit buckets with bounded retention.
+- Record administrator access recovery, security and accessibility reviews.
+- Review the first real customer cohort before expanding payment methods or inventory.
+
+These are tracked follow-ups, not claims of completed production verification.
+PayNow and inventory remain deferred pending business decisions.
+
+## Historical UAT baseline — 6 September 2026
+
+The following record predates the production update above. Its remaining gates
+and environment descriptions describe the state at that time.
+
+
 Last verified: 6 September 2026 against the stable UAT deployment at
 `https://lovelybakes-release-2.vercel.app`.
 
