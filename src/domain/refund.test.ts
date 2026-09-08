@@ -2,12 +2,20 @@ import { describe, expect, it } from "vitest";
 import { canRefund, refundRequestSchema } from "./refund";
 
 describe("refund rules", () => {
-  it("allows refundable test and live Stripe orders", () => {
-    expect(canRefund("paid", "cs_test_123")).toBe(true);
-    expect(canRefund("ready", "cs_test_123")).toBe(true);
-    expect(canRefund("fulfilled", "cs_test_123")).toBe(false);
-    expect(canRefund("paid", "cs_live_123")).toBe(true);
-    expect(canRefund("paid", "uat_123")).toBe(false);
+  it.each(["paid", "preparing", "ready"])("allows %s orders in their active Stripe mode", status => {
+    expect(canRefund(status, "cs_test_123", "test")).toBe(true);
+    expect(canRefund(status, "cs_live_123", "live")).toBe(true);
+    expect(canRefund(status, "cs_test_123", "live")).toBe(false);
+    expect(canRefund(status, "cs_live_123", "test")).toBe(false);
+    expect(canRefund(status, "cs_live_123", "disabled")).toBe(false);
+  });
+
+  it.each(["pending_payment", "fulfilled", "cancelled"])("rejects %s orders", status => {
+    expect(canRefund(status, "cs_live_123", "live")).toBe(false);
+  });
+
+  it.each([null, "uat_123", "cs_live_", "cs_live_123 invalid"])("rejects invalid reference %s", reference => {
+    expect(canRefund("paid", reference, "live")).toBe(false);
   });
 
   it("requires an exact, meaningful request", () => {

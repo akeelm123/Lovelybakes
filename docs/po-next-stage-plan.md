@@ -2,7 +2,23 @@
 
 Derived from Virtual Product Squad run `bc146820-c491-4f3e-9f40-1902b2d64b3d` and reviewed against the implemented application on 5 September 2026.
 
-## Current position
+## Current priorities — 8 September 2026
+
+Production hosting, custom-domain access, live card payment, cancellation/refund,
+and cancellation email delivery have now been rehearsed. See
+[implementation status](implementation-status.md) for evidence and limitations.
+The historical sequence below is retained for traceability; its provider choices
+and launch blockers no longer describe the current environment.
+
+1. Complete refund mode isolation and regression checks; submit the bounded change
+   for CPO approval before push, PR, merge, or production deployment.
+2. Establish operational alert delivery, expired rate-limit cleanup, and recovery
+   evidence. Validate failure handling without charging customers or sending
+   unsolicited messages.
+3. Record security/accessibility reviews and first-customer operational acceptance.
+   Keep PayNow and inventory outside this increment.
+
+## Historical position — 5 September 2026
 
 The local UAT includes storefront and cart, Google plus authenticator admin access, editable products and site content, ordering rules, synthetic order management, PostgreSQL persistence, and a Stripe-ready checkout/webhook boundary. Live payments and customer-data submission remain disabled. Stripe credentials, an email provider, production hosting, privacy policy, retention rules, and final catalog and delivery policies remain unresolved.
 
