@@ -7,5 +7,5 @@ export const refundRequestSchema = z.object({
 }).strict();
 
 export function canRefund(status: string, providerReference: string | null) {
-  return ["paid", "preparing", "ready"].includes(status) && Boolean(providerReference?.startsWith("cs_test_"));
+  return ["paid", "preparing", "ready"].includes(status) && Boolean(providerReference && /^cs_(?:test_|live_)/.test(providerReference));
 }
