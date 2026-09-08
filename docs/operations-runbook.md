@@ -37,3 +37,29 @@ Roll back application code by assigning the stable alias to the last known-good 
 ## Alert thresholds
 
 Alert the owner when health checks fail twice consecutively, Stripe webhook reconciliation returns 5xx, pending or failed emails accumulate after provider activation, or checkout failures rise materially above the established baseline. Final notification channels must be tested before launch.
+
+## Operations controls — prepared 8 September 2026
+
+`/admin/operations` requires the existing Google/MFA admin session. It displays
+failed emails, emails pending over 15 minutes, refunds pending over 15 minutes,
+and checkouts unpaid for over 24 hours for the active Stripe mode. Historical
+sandbox sessions are excluded when live keys are active. Counts are read on page
+load; this is an owner dashboard, not an external alert delivery service.
+A database failure displays an unavailable message, never a healthy zero count.
+
+Daily maintenance is declared in `vercel.json` for 00:00 UTC (08:00 Singapore).
+Before the approved production deployment, configure a random `CRON_SECRET` in
+Vercel production secrets. Vercel supplies it as a Bearer authorization header.
+The endpoint fails closed without that secret. Preview has no scheduled execution.
+Check the first production execution in Vercel logs and verify its returned count.
+
+The single cleanup query locks at most 1,000 oldest eligible records, skips locked
+records, and removes only rate-limit buckets expired more than 24 hours ago.
+Active counters, orders, payments, emails, and audit records are untouched. Large
+backlogs drain across successive runs. Monitor the eligible count in Operations;
+raise capacity only after measuring sustained growth.
+
+Remaining work: select and test an owner incident-alert destination, confirm
+production backup retention and a masked recovery drill, and record access
+recovery plus security/accessibility acceptance. No external alerts or recovery
+exercise have been completed by this increment.
