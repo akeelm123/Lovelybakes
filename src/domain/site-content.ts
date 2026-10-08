@@ -5,21 +5,21 @@ export const contentFields = [
     "key": "announcement",
     "group": "Brand",
     "label": "Announcement",
-    "value": "Home-baked in Singapore. Made for your kind of celebration.",
+    "value": "Thoughtfully made for life’s most memorable celebrations.",
     "kind": "text"
   },
   {
     "key": "brandName",
     "group": "Brand",
     "label": "Business name",
-    "value": "Lovelybakes",
+    "value": "Lovely Bakes",
     "kind": "text"
   },
   {
     "key": "brandByline",
     "group": "Brand",
     "label": "Byline",
-    "value": "by Nash",
+    "value": "Celebration Cakes",
     "kind": "text"
   },
   {
@@ -75,35 +75,35 @@ export const contentFields = [
     "key": "heroTitle",
     "group": "Hero",
     "label": "Heading",
-    "value": "A little lovely.\nA lot to celebrate.",
+    "value": "Celebration Cakes,\nBeautifully Made",
     "kind": "text"
   },
   {
     "key": "heroDescription",
     "group": "Hero",
     "label": "Description",
-    "value": "Home-baked celebration cakes, vintage piping and handmade toppers. Thoughtful details for a moment that’s yours.",
+    "value": "Thoughtfully designed celebration cakes and treats, handcrafted to make your special moments even more memorable.",
     "kind": "text"
   },
   {
     "key": "heroButton",
     "group": "Hero",
     "label": "Shop button",
-    "value": "Find your cake",
+    "value": "Shop the Collection",
     "kind": "text"
   },
   {
     "key": "heroSecondary",
     "group": "Hero",
     "label": "Custom orders button",
-    "value": "Have a design in mind?",
+    "value": "Create a Bespoke Cake",
     "kind": "text"
   },
   {
     "key": "heroSignature",
     "group": "Hero",
     "label": "Signature",
-    "value": "Baked by Nash, for your happy moments.",
+    "value": "Designed with care. Handcrafted for your celebration.",
     "kind": "text"
   },
   {
@@ -145,14 +145,14 @@ export const contentFields = [
     "key": "catalogTitle",
     "group": "Catalog",
     "label": "Heading",
-    "value": "Find your lovely.",
+    "value": "Featured Cakes",
     "kind": "text"
   },
   {
     "key": "catalogDescription",
     "group": "Catalog",
     "label": "Description",
-    "value": "A few creations from Nash’s kitchen. Which one feels like you?",
+    "value": "A curated selection of Lovely Bakes celebration cakes.",
     "kind": "text"
   },
   {
@@ -173,49 +173,49 @@ export const contentFields = [
     "key": "customEyebrow",
     "group": "Custom orders",
     "label": "Eyebrow",
-    "value": "Your moment, your cake",
+    "value": "Bespoke by Lovely Bakes",
     "kind": "text"
   },
   {
     "key": "customTitle",
     "group": "Custom orders",
     "label": "Heading",
-    "value": "Some occasions deserve a personal touch.",
+    "value": "Bespoke Celebration Cakes",
     "kind": "text"
   },
   {
     "key": "customDescription",
     "group": "Custom orders",
     "label": "Description",
-    "value": "A favourite colour. A meaningful detail. A topper that makes someone smile. Explore Nash’s creations and share what you have in mind.",
+    "value": "Share your ideas, colours and celebration with us. We’ll shape them into a thoughtfully designed cake with handcrafted details made especially for the occasion.",
     "kind": "text"
   },
   {
     "key": "customButton",
     "group": "Custom orders",
     "label": "Contact button",
-    "value": "Talk cake with Nash ↗",
+    "value": "Start Your Bespoke Enquiry",
     "kind": "text"
   },
   {
     "key": "storyEyebrow",
     "group": "Story",
     "label": "Eyebrow",
-    "value": "Lovelybakes by Nash",
+    "value": "About Lovely Bakes",
     "kind": "text"
   },
   {
     "key": "storyTitle",
     "group": "Story",
     "label": "Heading",
-    "value": "From my kitchen,\nto your celebration.",
+    "value": "Made to make celebrations memorable.",
     "kind": "text"
   },
   {
     "key": "storyDescription",
     "group": "Story",
     "label": "Description",
-    "value": "Home-baked celebration cakes with a love for vintage piping and handmade toppers. See the little details, the colourful characters and the celebrations behind Lovelybakes on Instagram.",
+    "value": "Lovely Bakes creates thoughtfully designed celebration cakes with a focus on craftsmanship, colour and personal details. Each cake is made to feel considered, distinctive and right for the celebration.",
     "kind": "text"
   },
   {
@@ -292,14 +292,14 @@ export const contentFields = [
     "key": "seoTitle",
     "group": "Search engines",
     "label": "Page title",
-    "value": "Lovelybakes | Baked with heart in Singapore",
+    "value": "Lovely Bakes | Celebration Cakes, Beautifully Made",
     "kind": "text"
   },
   {
     "key": "seoDescription",
     "group": "Search engines",
     "label": "Page description",
-    "value": "Small-batch cakes, tarts and celebration bakes, handcrafted in Singapore.",
+    "value": "Thoughtfully designed celebration cakes and treats, handcrafted for memorable celebrations.",
     "kind": "text"
   },
   {
