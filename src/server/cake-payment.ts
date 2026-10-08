@@ -120,8 +120,9 @@ export async function reconcileCakePayment(event: CakePaymentEvent) {
       }
     } else if (event.type === "checkout.session.expired" && payment[0].state === "payment_pending") {
       await tx`update cake_request_payment set state='expired', updated_at_utc=now() where cake_request_id=${requestId}`;
-      if (hold[0]?.state === "held") await tx`update cake_capacity_reservation set state='released', updated_at_utc=now() where cake_request_id=${requestId}`;
-      outcome = "expired";
+      // Checkout expires earlier than the 48-hour capacity hold. Keep the hold
+      // until its own deadline; a separate admin action can release it sooner.
+      outcome = "session_expired_hold_retained";
     }
     await tx`
       insert into cake_request_payment_event(stripe_event_id, cake_request_id, event_type, outcome)
