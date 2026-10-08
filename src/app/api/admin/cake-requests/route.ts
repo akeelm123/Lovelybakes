@@ -9,13 +9,18 @@ export async function GET(request: Request) {
   try {
     await requireAdmin(request);
     const rows = await database()`
-      select cake_request_id as "requestId", customer_name as "customerName",
-        customer_email as "customerEmail", customer_phone as "customerPhone",
-        requested_for_date::text as "requestedForDate",
-        fulfilment_preference as "fulfilmentPreference", occasion,
-        cake_details as "cakeDetails", allergy_notes as "allergyNotes",
-        status, version, created_at_utc as "createdAtUtc"
-      from cake_request order by created_at_utc desc limit 100
+      select r.cake_request_id as "requestId", r.customer_name as "customerName",
+        r.customer_email as "customerEmail", r.customer_phone as "customerPhone",
+        r.requested_for_date::text as "requestedForDate",
+        r.fulfilment_preference as "fulfilmentPreference", r.occasion,
+        r.cake_details as "cakeDetails", r.allergy_notes as "allergyNotes",
+        r.status, r.version, r.created_at_utc as "createdAtUtc",
+        c.slots as "heldSlots", c.state as "reservationState", c.expires_at_utc as "holdExpiresAtUtc",
+        p.amount_cents as "quoteCents", p.state as "paymentState"
+      from cake_request r
+      left join cake_capacity_reservation c on c.cake_request_id=r.cake_request_id
+      left join cake_request_payment p on p.cake_request_id=r.cake_request_id
+      order by r.created_at_utc desc limit 100
     `;
     return Response.json({ requests: rows }, { headers: { "Cache-Control": "no-store" } });
   } catch (error) {
