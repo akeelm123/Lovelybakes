@@ -85,16 +85,16 @@ export function Storefront({ products, preview = true, content = defaultContent,
       <a className="brand" href="#top" aria-label="Lovelybakes home"><Image unoptimized src={content.logoImage} alt="" width={60} height={60} /><span><strong>{content.brandName}</strong><small>{content.brandByline}</small></span></a>
       <nav className="editorial-nav" aria-label="Primary navigation">
         <a href="#categories-title">Shop</a>
-        <a href="#custom">Bespoke</a>
+        <a href="/bespoke">Bespoke</a>
         <a href="#story">About</a>
         <a href="/cake-care">Cake Care</a>
       </nav>
       {commerceEnabled && <button className="cart-button" type="button" onClick={openCart} aria-label={`Cart, ${itemCount} items`}>Your bag <span>{itemCount}</span></button>}
-      <nav className="header-actions editorial-mobile-nav" aria-label="Mobile navigation"><a href="#categories-title">Shop</a><a href="#custom">Bespoke</a><a href="#story">About</a><a href="/cake-care">Cake Care</a></nav>
+      <nav className="header-actions editorial-mobile-nav" aria-label="Mobile navigation"><a href="#categories-title">Shop</a><a href="/bespoke">Bespoke</a><a href="#story">About</a><a href="/cake-care">Cake Care</a></nav>
     </header>
     <main id="top">
       <section className="hero" aria-labelledby="hero-title">
-        <div className="hero-copy"><p className="eyebrow">{content.heroEyebrow}</p><h1 id="hero-title">{content.heroTitle}</h1><p>{content.heroDescription}</p><div className="hero-buttons"><a className="primary-button" href="#bakes">{content.heroButton} <span aria-hidden="true">↗</span></a><a className="underlined-link" href="#custom">{content.heroSecondary}</a></div><span className="hero-signature">{content.heroSignature}</span></div>
+        <div className="hero-copy"><p className="eyebrow">{content.heroEyebrow}</p><h1 id="hero-title">{content.heroTitle}</h1><p>{content.heroDescription}</p><div className="hero-buttons"><a className="primary-button" href="#bakes">{content.heroButton} <span aria-hidden="true">↗</span></a><a className="underlined-link" href="/bespoke">{content.heroSecondary}</a></div><span className="hero-signature">{content.heroSignature}</span></div>
         <div className="hero-visual"><Image unoptimized src={content.heroImage} alt={content.heroImageAlt} fill sizes="(max-width: 720px) 100vw, 48vw" priority /><a className="hero-caption" href={content.heroLink} target="_blank" rel="noreferrer">{content.heroCaption} <span aria-hidden="true">↗</span></a></div>
       </section>
       <section className="editorial-categories" aria-labelledby="categories-title">
@@ -138,7 +138,7 @@ export function Storefront({ products, preview = true, content = defaultContent,
       </section>
       <section className="story-band" id="story">
         <div><p className="eyebrow">About Lovely Bakes</p><h2>A little about Lovely Bakes.</h2></div>
-        <div><p>Lovely Bakes creates handcrafted celebration cakes with a focus on thoughtful design, beautiful finishing and personal details. Whether you choose from our collection or ask for something bespoke, our aim is to make a cake that feels right for your celebration.</p><a className="underlined-link" href="#custom">Explore Bespoke Cakes</a></div>
+        <div><p>Lovely Bakes creates handcrafted celebration cakes with a focus on thoughtful design, beautiful finishing and personal details. Whether you choose from our collection or ask for something bespoke, our aim is to make a cake that feels right for your celebration.</p><a className="underlined-link" href="/bespoke">Explore Bespoke Cakes</a></div>
       </section>
       <section className="custom-section" id="custom"><div className="custom-photo"><Image unoptimized src={content.customImage} alt={content.customImageAlt} fill sizes="(max-width: 720px) 100vw, 40vw" /></div><div className="custom-copy"><p className="eyebrow">{content.customEyebrow}</p><h2>{content.customTitle}</h2><p>{content.customDescription}</p><a className="primary-button" href={content.socialUrl} target="_blank" rel="noreferrer">{content.customButton}</a></div></section>
       <section className="ordering-section" aria-labelledby="ordering-title"><div><p className="eyebrow">Plan your celebration</p><h2 id="ordering-title">Ordering at a glance</h2></div><div className="ordering-rules"><p><strong>{orderingRule.leadTimeDays} days</strong><span>Minimum notice</span></p><p><strong>{formatPrice(orderingRule.minimumOrderCents)}</strong><span>Minimum order</span></p><p><strong>{orderingRule.collectionEnabled ? "Collection" : ""}{orderingRule.collectionEnabled && orderingRule.deliveryEnabled ? " & " : ""}{orderingRule.deliveryEnabled ? "Delivery" : ""}</strong><span>Available fulfilment</span></p></div><p>{orderingRule.collectionEnabled ? orderingRule.collectionInstructions : orderingRule.deliveryArea}</p></section>
@@ -146,7 +146,7 @@ export function Storefront({ products, preview = true, content = defaultContent,
     </main>
     <footer className="footer editorial-footer">
       <div className="editorial-footer-brand"><strong>{content.brandName}</strong><p>Thoughtfully designed celebration cakes, handcrafted in Singapore.</p></div>
-      <nav aria-label="Shop"><h2>Shop</h2><a href="#bakes" onClick={() => setCategory("Celebration")}>Cakes</a><a href="#bakes" onClick={() => setCategory("Cupcakes")}>Cupcakes</a><a href="#custom">Celebration Sets</a><a href="#custom">Bespoke</a></nav>
+      <nav aria-label="Shop"><h2>Shop</h2><a href="#bakes" onClick={() => setCategory("Celebration")}>Cakes</a><a href="#bakes" onClick={() => setCategory("Cupcakes")}>Cupcakes</a><a href="/bespoke">Celebration Sets</a><a href="/bespoke">Bespoke</a></nav>
       <nav aria-label="Help"><h2>Help</h2><a href="/cake-care">Cake Care</a><a href="#cake-care">FAQ</a><a href="#kind-words-title">Kind Words</a></nav>
       <nav aria-label="Information"><h2>Information</h2><a href="#story">About</a><a href={content.socialUrl} target="_blank" rel="noreferrer">Contact</a><a href="/privacy">Privacy</a><a href="/terms">Terms</a></nav>
       <div className="editorial-footer-bottom"><span>© Lovely Bakes</span><span>{commerceEnabled ? "Secure checkout powered by Stripe" : "Orders by enquiry"}</span></div>
