@@ -13,6 +13,7 @@ export async function PUT(request: Request) {
   } catch (error) {
     if (error instanceof AuthorizationError) return problem(error.status, "AUTHORIZATION_FAILED", error.message);
     if (error instanceof Error && error.message === "WEEK_MUST_START_MONDAY") return problem(400, "INVALID_WEEK", "The week must start on Monday.");
+    if (error instanceof Error && error.message === "CAPACITY_BELOW_RESERVED") return problem(409, "CAPACITY_BELOW_RESERVED", "The limit cannot be lower than active reservations.");
     return problem(503, "CAPACITY_UNAVAILABLE", "Capacity settings could not be saved.");
   }
 }
