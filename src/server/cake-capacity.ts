@@ -8,14 +8,30 @@ type ConfigureInput = { weekStartDate: string; slotLimit: number; paused: boolea
 
 export async function configureCapacity(input: ConfigureInput) {
   if (mondayForDate(input.weekStartDate) !== input.weekStartDate) throw new Error("WEEK_MUST_START_MONDAY");
-  const rows = await database()`
-    insert into cake_capacity_week (week_start_date, slot_limit, paused)
-    values (${input.weekStartDate}, ${input.slotLimit}, ${input.paused})
-    on conflict (week_start_date) do update set slot_limit=excluded.slot_limit,
-      paused=excluded.paused, updated_at_utc=now()
-    returning week_start_date::text as "weekStartDate", slot_limit as "slotLimit", paused
-  `;
-  return rows[0];
+  return database().begin(async (tx) => {
+    await tx`
+      insert into cake_capacity_week (week_start_date, slot_limit, paused)
+      values (${input.weekStartDate}, ${input.slotLimit}, true)
+      on conflict (week_start_date) do nothing
+    `;
+    const rows = await tx`
+      select slot_limit as "slotLimit" from cake_capacity_week
+      where week_start_date=${input.weekStartDate} for update
+    `;
+    if (!rows[0]) throw new Error("CAPACITY_CLOSED");
+    const used = await tx`
+      select coalesce(sum(slots),0)::int as slots from cake_capacity_reservation
+      where week_start_date=${input.weekStartDate}
+        and (state='confirmed' or (state='held' and expires_at_utc > now()))
+    `;
+    if (Number(used[0].slots) > input.slotLimit) throw new Error("CAPACITY_BELOW_RESERVED");
+    const updated = await tx`
+      update cake_capacity_week set slot_limit=${input.slotLimit}, paused=${input.paused}, updated_at_utc=now()
+      where week_start_date=${input.weekStartDate}
+      returning week_start_date::text as "weekStartDate", slot_limit as "slotLimit", paused
+    `;
+    return updated[0];
+  });
 }
 
 export async function reserveCakeCapacity(input: ReserveInput) {
