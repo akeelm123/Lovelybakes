@@ -30,6 +30,7 @@ export function CakeOperations() {
   const [paused, setPaused] = useState(false);
   const [slotsById, setSlotsById] = useState<Record<string, string>>({});
   const [quoteById, setQuoteById] = useState<Record<string, string>>({});
+  const [paymentLinks, setPaymentLinks] = useState<Record<string, string>>({});
   const load = useCallback(async () => {
     const [requestResult, capacityResult] = await Promise.all([
       api("/api/admin/cake-requests"), api("/api/admin/cake-capacity")
@@ -53,6 +54,7 @@ export function CakeOperations() {
     </header>
     <div className="cake-operations-actions">
       <button disabled={busy} onClick={() => action(async () => {})}>Refresh requests</button>
+      <button disabled={busy} onClick={() => action(() => api("/api/admin/cake-capacity/expire", "POST"))}>Clear expired holds</button>
       {message && <p role="status">{message}</p>}
     </div>
     <section>
@@ -96,13 +98,22 @@ export function CakeOperations() {
               requestId: item.requestId, version: item.version, slots: Number(slotsById[item.requestId] ?? "1")
             }))}>Approve & hold slots</button>
           </>}
-          {item.status === "approved" && item.reservationState === "held" && item.paymentState !== "paid" && <>
+          {item.status === "approved" && item.reservationState === "held" && (item.paymentState === null || item.paymentState === "quoted") && <>
             <label>Quote (SGD) <input type="number" min="1" step=".01" value={quoteById[item.requestId] ?? ""}
               onChange={event => setQuoteById(prev => ({ ...prev, [item.requestId]: event.target.value }))} /></label>
             <button disabled={busy || !quoteById[item.requestId]} onClick={() => action(() => api("/api/admin/cake-payments/quote", "POST", {
               requestId: item.requestId, amountCents: Math.round(Number(quoteById[item.requestId]) * 100)
             }))}>Save quote</button>
           </>}
+          {item.paymentState === "quoted" && item.reservationState === "held" && <button disabled={busy} onClick={() => action(async () => {
+            const result = await api("/api/admin/cake-payments/session", "POST", { requestId: item.requestId });
+            if (result.session?.checkoutUrl) setPaymentLinks(prev => ({ ...prev, [item.requestId]: result.session.checkoutUrl }));
+          })}>Create Stripe test payment link</button>}
+          {paymentLinks[item.requestId] && <div className="cake-operations-payment-link">
+            <p><strong>Payment link prepared — not sent to customer.</strong></p>
+            <a href={paymentLinks[item.requestId]} target="_blank" rel="noopener noreferrer">Open payment link</a>
+            <button disabled={busy} onClick={() => navigator.clipboard.writeText(paymentLinks[item.requestId]).then(() => setMessage("Link copied. Check the request and recipient before sharing.")).catch(() => setMessage("Unable to copy link."))}>Copy link</button>
+          </div>}
         </div>
       </article>)}
     </section>
