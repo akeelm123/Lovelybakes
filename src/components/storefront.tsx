@@ -98,7 +98,7 @@ export function Storefront({ products, preview = true, content = defaultContent,
           {[
             { label: "Cakes", image: "/lovelybakes/vintage-pink.jpg", alt: "Pink vintage-style celebration cake", category: "Celebration" },
             { label: "Cupcakes", image: "/lovelybakes/cupcakes.jpg", alt: "Box of decorated cupcakes", category: "Cupcakes" },
-            { label: "Celebration Sets", image: "/lovelybakes/floral-marble.jpg", alt: "Handcrafted floral celebration cake", category: "All" },
+            { label: "Celebration Sets", image: "/lovelybakes/floral-marble.jpg", alt: "Handcrafted floral celebration cake", category: "Bespoke" },
             { label: "Bespoke", image: content.customImage, alt: content.customImageAlt, category: "Bespoke" }
           ].map((item) => <a key={item.label} className="editorial-category-card" href={item.category === "Bespoke" ? "#custom" : "#bakes"} onClick={() => { if (item.category !== "Bespoke") { setCategory(item.category); setSearch(""); } }}>
             <span className="editorial-category-image"><Image unoptimized src={item.image} alt={item.alt} fill sizes="(max-width: 720px) 50vw, 25vw" /></span>
