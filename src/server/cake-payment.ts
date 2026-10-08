@@ -77,8 +77,13 @@ export async function prepareCakePaymentSession(requestId: string) {
     returning p.cake_request_id
   `;
   if (!attached[0]) {
-    await stripeClient().checkout.sessions.expire(session.id).catch(() => undefined);
-    throw new Error("PAYMENT_SESSION_CONFLICT");
+    const current = await sql`select stripe_session_id as id, state from cake_request_payment where cake_request_id=${requestId}`;
+    // Concurrent retries may have attached this exact idempotent Stripe session.
+    // Never expire a session another administrator successfully attached.
+    if (current[0]?.id !== session.id || current[0]?.state !== "payment_pending") {
+      if (current[0]?.id !== session.id) await stripeClient().checkout.sessions.expire(session.id).catch(() => undefined);
+      throw new Error("PAYMENT_SESSION_CONFLICT");
+    }
   }
   // The URL is for the authenticated administrator only; sending is a separate action.
   return { requestId, sessionId: session.id, checkoutUrl: session.url, expiresAt, linkSent: false, bookingConfirmed: false };
