@@ -2,6 +2,25 @@ import { AuthorizationError, requireAdmin } from "@/server/auth";
 import { configureCapacity } from "@/server/cake-capacity";
 import { configureCapacitySchema } from "@/domain/cake-capacity";
 import { problem, safeJson } from "@/server/http";
+import { database } from "@/server/database";
+
+export async function GET(request: Request) {
+  try {
+    await requireAdmin(request);
+    const weeks = await database()`
+      select w.week_start_date::text as "weekStartDate", w.slot_limit as "slotLimit", w.paused,
+        coalesce(sum(r.slots) filter (where r.state = 'confirmed' or (r.state = 'held' and r.expires_at_utc > now())), 0)::int as "reservedSlots"
+      from cake_capacity_week w left join cake_capacity_reservation r on r.week_start_date=w.week_start_date
+      group by w.week_start_date, w.slot_limit, w.paused
+      order by w.week_start_date desc limit 24
+    `;
+    return Response.json({ weeks }, { headers: { "Cache-Control": "no-store" } });
+  } catch (error) {
+    if (error instanceof AuthorizationError) return problem(error.status, "AUTHORIZATION_FAILED", error.message);
+    return problem(503, "CAPACITY_UNAVAILABLE", "Capacity could not be loaded.");
+  }
+}
+
 
 export async function PUT(request: Request) {
   try {
