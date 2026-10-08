@@ -30,3 +30,11 @@ A request is never a booking. Only a successful verified payment against an appr
 - Stripe can report a successful payment after a hold has expired; current handler flags this for manual review rather than confirming a booking. Define and test a refund/exception-handling procedure before release.
 - Ensure the Stripe webhook configuration routes cake payments only to the dedicated signed endpoint; avoid duplicate or cross-workflow processing.
 - Validate all migration and transactional logic against an isolated Postgres database, including concurrent reservations and late webhook deliveries.
+
+## Stripe Checkout session limitations
+- Stripe Checkout sessions have a shorter maximum expiry than the 48-hour capacity hold. The current session creator uses at most 23 hours and never later than the capacity hold.
+- Session creation is administrator-only and disabled by CAKE_PAYMENT_WORKFLOW_ENABLED. It does not send emails or payment links.
+- The return page is not proof of payment; only a signed webhook can mark the reservation confirmed.
+- Do not enable the payment feature before integration tests cover payment events arriving during session attachment, simultaneous administrator retries, session expiry, stale holds, refunds, webhook delivery failures and retry idempotency.
+- The payment session may expire before the 48-hour hold. A new payment-session issuance and extension policy is still [TBD]; no automatic second session is implemented.
+- A customer booking-confirmation notification is still [TBD].
