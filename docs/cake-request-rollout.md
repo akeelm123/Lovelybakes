@@ -8,7 +8,7 @@ This work is intentionally additive. Do not replace the production Stripe checko
 - Admin GET /api/admin/cake-requests lists recent requests.
 - Admin PATCH accepts only reviewing or declined with optimistic version matching.
 - Migrations 013 and 014 define requests, weekly capacity and reservation structures.
-- No administrator approval, capacity reservation, payment link, customer notifications, or confirmation is implemented yet.
+- Admin capacity holds and quote storage are implemented behind separate feature flags. A dedicated Stripe-signed webhook reconciliation handler exists but has no payment-session creation path yet. No payment link is issued or sent, and customer notifications remain unimplemented.
 
 ## Before enabling intake
 1. Apply and verify migrations 013 and 014 in an isolated preview database, not the production database.
@@ -22,3 +22,11 @@ This work is intentionally additive. Do not replace the production Stripe checko
 
 ## Operational rules
 A request is never a booking. Only a successful verified payment against an approved, capacity-held request may confirm a booking. A database row with status 'approved' alone is insufficient. Existing paid orders remain under the legacy workflow until migration is separately approved.
+
+## Payment safety review (pending)
+- Migration 015 adds separate cake_request_payment and idempotent event records.
+- CAKE_PAYMENT_WORKFLOW_ENABLED defaults to off. Do not enable it yet.
+- Stripe session creation must bind a reviewed amount and approved cakeRequestId, persist the session ID before a payment link is delivered, and expire the Stripe session no later than the held slot.
+- Stripe can report a successful payment after a hold has expired; current handler flags this for manual review rather than confirming a booking. Define and test a refund/exception-handling procedure before release.
+- Ensure the Stripe webhook configuration routes cake payments only to the dedicated signed endpoint; avoid duplicate or cross-workflow processing.
+- Validate all migration and transactional logic against an isolated Postgres database, including concurrent reservations and late webhook deliveries.
