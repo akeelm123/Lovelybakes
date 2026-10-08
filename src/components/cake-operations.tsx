@@ -38,7 +38,19 @@ export function CakeOperations() {
     setRequests(requestResult.requests ?? []);
     setWeeks(capacityResult.weeks ?? []);
   }, []);
-  useEffect(() => { load().catch(error => setMessage(String(error.message))); }, [load]);
+  useEffect(() => {
+    // Defer the initial fetch to an asynchronous callback rather than
+    // synchronously triggering state changes in the effect body.
+    const controller = new AbortController();
+    const start = async () => {
+      if (controller.signal.aborted) return;
+      try { await load(); } catch (error) {
+        if (!controller.signal.aborted) setMessage(error instanceof Error ? error.message : "Unable to load requests.");
+      }
+    };
+    void start();
+    return () => controller.abort();
+  }, [load]);
   async function action(work: () => Promise<unknown>) {
     setBusy(true); setMessage("");
     try { await work(); await load(); setMessage("Saved."); }
