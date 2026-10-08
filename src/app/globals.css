@@ -1,7 +1,15 @@
 :root {
-  --cream: #fffaf4; --paper: #fff; --ink: #2d211e; --muted: #756762;
-  --coral: #d95f50; --coral-dark: #9f3f35; --sage: #5f7461; --line: #eadfd8;
-  --shadow: 0 18px 50px rgb(75 48 37 / 10%);
+  --cream: #fffaf5;
+  --paper: #fffdf9;
+  --ink: #432b38;
+  --muted: #796a70;
+  --coral: #c92d72;
+  --coral-dark: #9f1f57;
+  --sage: #20a7a0;
+  --line: #eadfdc;
+  --gold: #c9a45f;
+  --blush: #f8e9ee;
+  --shadow: 0 22px 60px rgb(67 43 56 / 10%);
 }
 * { box-sizing: border-box; }
 html { scroll-behavior: smooth; }
@@ -152,7 +160,7 @@ h1 { font-size: clamp(3rem, 5.2vw, 5rem); font-weight: 500; line-height: 1.05; m
 .faq-section details { border-bottom: 1px solid var(--line); padding: 1.2rem 0; }
 .faq-section summary { cursor: pointer; font-weight: 600; line-height: 1.6; }
 .faq-section details p { line-height: 1.7; color: var(--muted); }
-.footer { align-items: center; background: #492c3c; color: #fffaf7; padding: 3rem 5vw; }
+.footer { align-items: center; background: var(--cream); color: var(--ink); padding: 4rem 5vw; border-top: 1px solid var(--line); }
 .footer strong { font: 500 1.7rem var(--font-display), serif; }
 .footer small { font: italic 1rem Georgia, serif; }
 .footer a { color: inherit; }
@@ -205,3 +213,25 @@ h1 { font-size: clamp(3rem, 5.2vw, 5rem); font-weight: 500; line-height: 1.05; m
 .confirmation-page { min-height:100vh; background:#f8edf1; padding:clamp(2rem,8vw,7rem); color:#472639; } .confirmation-page section { max-width:680px; margin:8vh auto; background:#fff; padding:clamp(2rem,6vw,5rem); border-radius:1.5rem; } .confirmation-page h1 { font:600 clamp(2.2rem,6vw,5rem)/1 var(--font-display),serif; }
 
 .legal-page{min-height:100vh;background:#f8edf1;padding:clamp(2rem,7vw,6rem);color:#472639}.legal-page article{max-width:760px;margin:8vh auto;background:#fff;padding:clamp(2rem,6vw,5rem);border-radius:1.5rem}.legal-page h1{font:600 clamp(2.5rem,6vw,5rem)/1 var(--font-display),serif}.legal-page p{line-height:1.8}.footer nav{display:flex;gap:1rem}
+
+
+/* Editorial Patisserie foundation */
+.hero-copy { background: var(--cream); }
+.hero-copy h1, .section-heading h2, .custom-copy h2, .story-band h2, .faq-section h2 {
+  font-family: var(--font-display), Georgia, serif;
+  font-weight: 500;
+  letter-spacing: -.025em;
+}
+.primary-button {
+  background: var(--coral);
+  border-color: var(--coral);
+}
+.primary-button:hover { background: var(--coral-dark); border-color: var(--coral-dark); }
+.eyebrow { color: var(--coral-dark); letter-spacing: .16em; }
+.underlined-link { text-decoration-color: var(--gold); text-underline-offset: .35em; }
+.product-image { border-radius: 10rem 10rem .75rem .75rem; overflow: hidden; background: var(--blush); }
+.product-card { background: transparent; box-shadow: none; }
+.story-band { background: var(--blush); color: var(--ink); }
+.ordering-section { background: var(--cream); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+.ordering-rules p { border: 1px solid var(--line); box-shadow: none; }
+.footer p, .footer > span { color: var(--muted); }
