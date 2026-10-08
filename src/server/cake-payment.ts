@@ -2,6 +2,7 @@ import "server-only";
 import { database } from "@/server/database";
 import { stripeClient, paymentsEnabled } from "@/server/payments";
 import type { CakePaymentEvent } from "@/domain/cake-payment";
+import { checkoutExpirySeconds, paymentOutcome, type CakePaymentState, type CapacityHoldState } from "@/domain/cake-payment-policy";
 
 // This service deliberately does not create or send payment links yet.
 // It prepares approved amounts and reconciles signed Stripe webhook events.
@@ -46,12 +47,12 @@ export async function prepareCakePaymentSession(requestId: string) {
     throw new Error("PAYMENT_NOT_ELIGIBLE");
   const holdExpires = new Date(String(row.hold_expires)).getTime();
   const now = Date.now();
-  if (holdExpires - now < 35 * 60_000) throw new Error("HOLD_TOO_SHORT");
+
   const baseUrl = process.env.PUBLIC_APP_URL;
   if (!baseUrl) throw new Error("PUBLIC_APP_URL_NOT_CONFIGURED");
   // Stripe Checkout Sessions cannot remain open for 48 hours. Keep the slot
   // hold at 48 hours, but expire this Checkout Session within 23 hours.
-  const expiresAt = Math.floor(Math.min(holdExpires - 60_000, now + 23 * 3600_000) / 1000);
+  const expiresAt = checkoutExpirySeconds(holdExpires, now);
   const session = await stripeClient().checkout.sessions.create({
     mode: "payment",
     payment_method_types: ["card"],
@@ -107,18 +108,23 @@ export async function reconcileCakePayment(event: CakePaymentEvent) {
       where cake_request_id=${requestId} for update
     `;
     let outcome = "ignored";
-    if (event.type === "checkout.session.completed" && event.session.payment_status === "paid") {
-      const valid = hold[0]?.state === "held" && new Date(String(hold[0].expires)).getTime() > Date.now();
-      if (valid && payment[0].state === "payment_pending") {
+    const decision = paymentOutcome({
+      eventType: event.type,
+      paymentStatus: event.session.payment_status,
+      paymentState: String(payment[0].state) as CakePaymentState,
+      holdState: String(hold[0]?.state ?? "released") as CapacityHoldState,
+      holdExpiresAtMs: hold[0]?.expires ? new Date(String(hold[0].expires)).getTime() : null,
+      nowMs: Date.now(),
+    });
+    if (decision === "confirm") {
         await tx`update cake_capacity_reservation set state='confirmed', expires_at_utc=null, updated_at_utc=now() where cake_request_id=${requestId}`;
         await tx`update cake_request_payment set state='paid', paid_at_utc=now(), updated_at_utc=now() where cake_request_id=${requestId}`;
         outcome = "confirmed";
-      } else {
-        // Money may have been collected outside the valid hold. Never silently confirm.
-        await tx`update cake_request_payment set state='manual_review', updated_at_utc=now() where cake_request_id=${requestId} and state<>'paid'`;
-        outcome = "manual_review";
-      }
-    } else if (event.type === "checkout.session.expired" && payment[0].state === "payment_pending") {
+    } else if (decision === "manual_review") {
+      // Money may have been collected outside the valid hold. Never silently confirm.
+      await tx`update cake_request_payment set state='manual_review', updated_at_utc=now() where cake_request_id=${requestId} and state<>'paid'`;
+      outcome = "manual_review";
+    } else if (decision === "expire_session") {
       await tx`update cake_request_payment set state='expired', updated_at_utc=now() where cake_request_id=${requestId}`;
       // Checkout expires earlier than the 48-hour capacity hold. Keep the hold
       // until its own deadline; a separate admin action can release it sooner.
