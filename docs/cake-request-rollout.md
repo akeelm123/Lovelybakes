@@ -38,3 +38,10 @@ A request is never a booking. Only a successful verified payment against an appr
 - Do not enable the payment feature before integration tests cover payment events arriving during session attachment, simultaneous administrator retries, session expiry, stale holds, refunds, webhook delivery failures and retry idempotency.
 - The payment session may expire before the 48-hour hold. A new payment-session issuance and extension policy is still [TBD]; no automatic second session is implemented.
 - A customer booking-confirmation notification is still [TBD].
+
+## Security and integration review — 8 October 2026
+- GitHub Actions run 37774195832 passed 15 unit tests, ESLint and Next.js build before subsequent payment-safety changes.
+- New cake payment-session creation now requires a Stripe sk_test_ key even if the workflow flag is enabled; this intentionally blocks production payment collection through the new path.
+- The webhook confirmation SQL now checks that the reservation is still held and unexpired at database-write time. A hold that expires at the boundary is sent to manual review, not confirmed.
+- npm ci previously reported 10 dependency advisories (9 high, 1 critical). The affected packages and runtime exposure have not yet been triaged; do not merge without an npm audit and remediation review.
+- Still unverified: isolated Postgres migrations, transaction concurrency, signed Stripe webhook integration, expiry worker races, refund/exception handling, and email notifications. Do not enable CAKE_REQUEST_INTAKE_ENABLED, CAKE_CAPACITY_RESERVATIONS_ENABLED or CAKE_PAYMENT_WORKFLOW_ENABLED in production.
