@@ -11,6 +11,7 @@ CREATE TABLE cake_request (
   occasion TEXT NOT NULL DEFAULT '',
   cake_details TEXT NOT NULL CHECK (char_length(cake_details) BETWEEN 10 AND 3000),
   allergy_notes TEXT NOT NULL DEFAULT '',
+  version INTEGER NOT NULL DEFAULT 1 CHECK (version > 0),
   status TEXT NOT NULL DEFAULT 'received' CHECK (status IN ('received','reviewing','approved','declined','cancelled')),
   created_at_utc TIMESTAMPTZ NOT NULL DEFAULT now(),
   updated_at_utc TIMESTAMPTZ NOT NULL DEFAULT now()
