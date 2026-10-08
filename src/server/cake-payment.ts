@@ -117,17 +117,22 @@ export async function reconcileCakePayment(event: CakePaymentEvent) {
       nowMs: Date.now(),
     });
     if (decision === "confirm") {
-        await tx`update cake_capacity_reservation set state='confirmed', expires_at_utc=null, updated_at_utc=now() where cake_request_id=${requestId}`;
+        // The reservation must still be held at the moment of the SQL write.
+        // This prevents confirmation after an expiry worker has released it.
+        const confirmed = await tx`
+          update cake_capacity_reservation set state='confirmed', expires_at_utc=null, updated_at_utc=now()
+          where cake_request_id=${requestId} and state='held' and expires_at_utc > now()
+          returning reservation_id
+        `;
+        if (!confirmed[0]) throw new Error("HOLD_EXPIRED_DURING_RECONCILIATION");
         await tx`update cake_request_payment set state='paid', paid_at_utc=now(), updated_at_utc=now() where cake_request_id=${requestId}`;
         outcome = "confirmed";
     } else if (decision === "manual_review") {
-      // Money may have been collected outside the valid hold. Never silently confirm.
+      // A paid checkout without a valid hold is an exception, not a booking.
       await tx`update cake_request_payment set state='manual_review', updated_at_utc=now() where cake_request_id=${requestId} and state<>'paid'`;
       outcome = "manual_review";
     } else if (decision === "expire_session") {
       await tx`update cake_request_payment set state='expired', updated_at_utc=now() where cake_request_id=${requestId}`;
-      // Checkout expires earlier than the 48-hour capacity hold. Keep the hold
-      // until its own deadline; a separate admin action can release it sooner.
       outcome = "session_expired_hold_retained";
     }
     await tx`
@@ -137,3 +142,4 @@ export async function reconcileCakePayment(event: CakePaymentEvent) {
     return outcome;
   });
 }
+
