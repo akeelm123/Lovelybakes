@@ -87,10 +87,10 @@ export function Storefront({ products, preview = true, content = defaultContent,
         <a href="#categories-title">Shop</a>
         <a href="#custom">Bespoke</a>
         <a href="#story">About</a>
-        <a href="#cake-care">Help & FAQ</a>
+        <a href="/cake-care">Cake Care</a>
       </nav>
       {commerceEnabled && <button className="cart-button" type="button" onClick={openCart} aria-label={`Cart, ${itemCount} items`}>Your bag <span>{itemCount}</span></button>}
-      <nav className="header-actions editorial-mobile-nav" aria-label="Mobile navigation"><a href="#categories-title">Shop</a><a href="#custom">Bespoke</a><a href="#story">About</a><a href="#cake-care">Help & FAQ</a></nav>
+      <nav className="header-actions editorial-mobile-nav" aria-label="Mobile navigation"><a href="#categories-title">Shop</a><a href="#custom">Bespoke</a><a href="#story">About</a><a href="/cake-care">Cake Care</a></nav>
     </header>
     <main id="top">
       <section className="hero" aria-labelledby="hero-title">
