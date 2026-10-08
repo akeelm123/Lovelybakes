@@ -1,5 +1,6 @@
 import "server-only";
 import { database } from "@/server/database";
+import { stripeClient, paymentsEnabled } from "@/server/payments";
 import type { CakePaymentEvent } from "@/domain/cake-payment";
 
 // This service deliberately does not create or send payment links yet.
@@ -24,6 +25,63 @@ export async function quoteCakeRequest(requestId: string, amountCents: number) {
     if (!quoted[0]) throw new Error("QUOTE_LOCKED");
     return quoted[0];
   });
+}
+
+
+export async function prepareCakePaymentSession(requestId: string) {
+  if (!paymentsEnabled()) throw new Error("PAYMENTS_DISABLED");
+  if (process.env.CAKE_PAYMENT_WORKFLOW_ENABLED !== "true") throw new Error("WORKFLOW_DISABLED");
+  const sql = database();
+  const rows = await sql`
+    select p.amount_cents as amount, p.state, p.stripe_session_id as session,
+      r.customer_email as email, r.status as request_status,
+      c.state as hold_state, c.expires_at_utc as hold_expires
+    from cake_request_payment p
+    join cake_request r using (cake_request_id)
+    join cake_capacity_reservation c using (cake_request_id)
+    where p.cake_request_id=${requestId}
+  `;
+  const row = rows[0];
+  if (!row || row.state !== "quoted" || row.request_status !== "approved" || row.hold_state !== "held" || row.session)
+    throw new Error("PAYMENT_NOT_ELIGIBLE");
+  const holdExpires = new Date(String(row.hold_expires)).getTime();
+  const now = Date.now();
+  if (holdExpires - now < 35 * 60_000) throw new Error("HOLD_TOO_SHORT");
+  const baseUrl = process.env.PUBLIC_APP_URL;
+  if (!baseUrl) throw new Error("PUBLIC_APP_URL_NOT_CONFIGURED");
+  // Stripe Checkout Sessions cannot remain open for 48 hours. Keep the slot
+  // hold at 48 hours, but expire this Checkout Session within 23 hours.
+  const expiresAt = Math.floor(Math.min(holdExpires - 60_000, now + 23 * 3600_000) / 1000);
+  const session = await stripeClient().checkout.sessions.create({
+    mode: "payment",
+    payment_method_types: ["card"],
+    client_reference_id: requestId,
+    customer_email: String(row.email),
+    metadata: { cakeRequestId: requestId },
+    expires_at: expiresAt,
+    success_url: `${baseUrl}/request/confirmation?session_id={CHECKOUT_SESSION_ID}`,
+    cancel_url: `${baseUrl}/bespoke?payment=cancelled`,
+    line_items: [{ quantity: 1, price_data: {
+      currency: "sgd", unit_amount: Number(row.amount),
+      product_data: { name: "Approved Lovely Bakes cake request" },
+    } }],
+  }, { idempotencyKey: `cake-payment-${requestId}-${row.amount}` });
+  // If another admin already attached a session, do not expose this session.
+  const attached = await sql`
+    update cake_request_payment p set stripe_session_id=${session.id},
+      state='payment_pending', updated_at_utc=now()
+    from cake_capacity_reservation c
+    where p.cake_request_id=${requestId} and c.cake_request_id=p.cake_request_id
+      and p.state='quoted' and p.stripe_session_id is null
+      and c.state='held' and c.expires_at_utc > now() + interval '1 minute'
+    returning p.cake_request_id
+  `;
+  if (!attached[0]) {
+    await stripeClient().checkout.sessions.expire(session.id).catch(() => undefined);
+    throw new Error("PAYMENT_SESSION_CONFLICT");
+  }
+  // The URL is for the authenticated administrator only; sending is a separate action.
+  return { requestId, sessionId: session.id, checkoutUrl: session.url, expiresAt, linkSent: false, bookingConfirmed: false };
 }
 
 export async function reconcileCakePayment(event: CakePaymentEvent) {
