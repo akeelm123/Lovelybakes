@@ -92,12 +92,39 @@ export function Storefront({ products, preview = true, content = defaultContent,
         <div className="hero-copy"><p className="eyebrow">{content.heroEyebrow}</p><h1 id="hero-title">{content.heroTitle}</h1><p>{content.heroDescription}</p><div className="hero-buttons"><a className="primary-button" href="#bakes">{content.heroButton} <span aria-hidden="true">↗</span></a><a className="underlined-link" href="#custom">{content.heroSecondary}</a></div><span className="hero-signature">{content.heroSignature}</span></div>
         <div className="hero-visual"><Image unoptimized src={content.heroImage} alt={content.heroImageAlt} fill sizes="(max-width: 720px) 100vw, 48vw" priority /><a className="hero-caption" href={content.heroLink} target="_blank" rel="noreferrer">{content.heroCaption} <span aria-hidden="true">↗</span></a></div>
       </section>
-      <div className="craft-strip"><span>{content.highlightOne}</span><span aria-hidden="true">✳</span><span>{content.highlightTwo}</span><span aria-hidden="true">✳</span><span>{content.highlightThree}</span><span aria-hidden="true">✳</span><span>{content.highlightFour}</span></div>
+      <section className="editorial-categories" aria-labelledby="categories-title">
+        <div className="editorial-section-heading"><p className="eyebrow">Explore Lovely Bakes</p><h2 id="categories-title">Find something beautiful for your celebration.</h2></div>
+        <div className="editorial-category-grid">
+          {[
+            { label: "Cakes", image: "/lovelybakes/vintage-pink.jpg", alt: "Pink vintage-style celebration cake", category: "Celebration" },
+            { label: "Cupcakes", image: "/lovelybakes/cupcakes.jpg", alt: "Box of decorated cupcakes", category: "Cupcakes" },
+            { label: "Celebration Sets", image: "/lovelybakes/floral-marble.jpg", alt: "Handcrafted floral celebration cake", category: "All" },
+            { label: "Bespoke", image: content.customImage, alt: content.customImageAlt, category: "Bespoke" }
+          ].map((item) => <a key={item.label} className="editorial-category-card" href={item.category === "Bespoke" ? "#custom" : "#bakes"} onClick={() => { if (item.category !== "Bespoke") { setCategory(item.category); setSearch(""); } }}>
+            <span className="editorial-category-image"><Image unoptimized src={item.image} alt={item.alt} fill sizes="(max-width: 720px) 50vw, 25vw" /></span>
+            <span className="editorial-category-label">{item.label}<span aria-hidden="true"> ↗</span></span>
+          </a>)}
+        </div>
+        <p className="editorial-category-note">Celebration Sets are available by enquiry while our curated collection is being prepared.</p>
+      </section>
       <section className="catalog-section" id="bakes" aria-labelledby="catalog-title">
         <div className="section-heading"><div><h2 id="catalog-title">{content.catalogTitle}</h2><p>{content.catalogDescription}</p></div><a className="underlined-link" href={content.socialUrl} target="_blank" rel="noreferrer">{content.catalogSocial}</a></div>
         <div className="catalog-toolbar"><div className="filters" aria-label="Filter products by category">{categories.map((item) => <button key={item} className="filter-button" type="button" aria-pressed={category === item} onClick={() => setCategory(item)}>{item === "All" ? "All creations" : item === "Celebration" ? "Celebration cakes" : item}</button>)}</div><p className="preview-label">{preview ? "UAT preview · Sample prices in SGD" : "From prices in SGD · Confirm your design and quote"}</p></div>
         <div className="product-grid" aria-live="polite">{visibleProducts.map((product) => <article className="product-card" key={product.id} aria-label={`${product.name}, ${preview ? "sample price " : ""}${formatPrice(product.priceCents)}`}><div className="product-image"><Image unoptimized src={product.imageUrl} alt={product.imageAlt} fill sizes="(max-width: 600px) 50vw, (max-width: 1023px) 50vw, 33vw" /><span className="photo-tag">{content.photoTag}</span></div><div className="product-content"><div className="product-meta"><span className="badge">{product.category === "Celebration" ? "Celebration cake" : product.category}</span><span className="price">{commerceEnabled ? formatPrice(product.priceCents) : `From ${formatPrice(product.priceCents)}`}{preview && <small>sample price</small>}</span></div><h3>{product.name}</h3><p>{product.description}</p>{commerceEnabled ? <button className="primary-button" type="button" onClick={() => addToCart(product)}>Add to bag <span aria-hidden="true">+</span></button> : <a className="primary-button" href={content.socialUrl} target="_blank" rel="noreferrer">Enquire on Instagram ↗</a>}</div></article>)}</div>
         {visibleProducts.length === 0 && <div className="search-empty"><h3>No cakes found</h3><p>Try a different name or browse all creations.</p><button className="secondary-button" onClick={() => { setSearch(""); setCategory("All"); }}>Show all cakes</button></div>}
+      </section>
+      <section className="editorial-craft" aria-labelledby="craft-title">
+        <div className="editorial-craft-image"><Image unoptimized src={content.customImage} alt={content.customImageAlt} fill sizes="(max-width: 720px) 100vw, 46vw" /></div>
+        <div className="editorial-craft-copy">
+          <p className="eyebrow">The Lovely Bakes approach</p>
+          <h2 id="craft-title">A little more thought in every detail.</h2>
+          <p>From the first idea to the finishing touches, each celebration cake is designed to feel personal, considered and beautifully made.</p>
+          <div className="editorial-pillars">
+            <div><h3>Thoughtfully Designed</h3><p>Made to suit the occasion and the people celebrating.</p></div>
+            <div><h3>Handcrafted Details</h3><p>Care and creativity in every finishing touch.</p></div>
+            <div><h3>Made for Your Celebration</h3><p>Personal details that make the moment your own.</p></div>
+          </div>
+        </div>
       </section>
       <section className="custom-section" id="custom"><div className="custom-photo"><Image unoptimized src={content.customImage} alt={content.customImageAlt} fill sizes="(max-width: 720px) 100vw, 40vw" /></div><div className="custom-copy"><p className="eyebrow">{content.customEyebrow}</p><h2>{content.customTitle}</h2><p>{content.customDescription}</p><a className="primary-button" href={content.socialUrl} target="_blank" rel="noreferrer">{content.customButton}</a></div></section>
       <section className="story-band" id="story"><div><p className="eyebrow">{content.storyEyebrow}</p><h2>{content.storyTitle}</h2></div><div><p>{content.storyDescription}</p><a className="underlined-link" href={content.socialUrl} target="_blank" rel="noreferrer">{content.storyButton}</a></div></section>
