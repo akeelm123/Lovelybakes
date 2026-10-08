@@ -317,3 +317,24 @@ h1 { font-size: clamp(3rem, 5.2vw, 5rem); font-weight: 500; line-height: 1.05; m
 .editorial-footer nav a:hover { color: var(--coral); text-decoration: underline; text-underline-offset: .25rem; }
 .editorial-footer-bottom { grid-column: 1 / -1; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 1rem; padding-top: 1.5rem; border-top: 1px solid var(--line); color: var(--muted); font-size: .75rem; }
 @media (max-width: 720px) { .editorial-footer { grid-template-columns: repeat(2, minmax(0, 1fr)); } .editorial-footer-brand { grid-column: 1 / -1; } }
+
+/* Bespoke request flow: intentionally distinct from checkout */
+.bespoke-page { background: var(--cream); color: var(--ink); min-height: 100vh; }
+.bespoke-intro { padding: clamp(2rem, 5vw, 5rem) clamp(1.25rem, 8vw, 9rem); background: var(--blush); }
+.bespoke-intro > a { display: inline-block; margin-bottom: 3rem; color: var(--ink); }
+.bespoke-intro h1 { font: 500 clamp(3rem, 7vw, 6.5rem)/1 var(--font-display), Georgia, serif; margin: .5rem 0 1.2rem; max-width: 850px; }
+.bespoke-intro > p:last-child { max-width: 42rem; line-height: 1.7; color: var(--muted); }
+.bespoke-steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; padding: clamp(2rem, 5vw, 5rem) clamp(1.25rem, 8vw, 9rem); }
+.bespoke-steps > div { border-top: 1px solid var(--line); padding-top: 1.5rem; }
+.bespoke-steps span { color: var(--coral); }
+.bespoke-steps h2 { font: 500 2rem var(--font-display), Georgia, serif; margin: 1rem 0 .5rem; }
+.bespoke-steps p { color: var(--muted); line-height: 1.6; }
+.bespoke-form-section { max-width: 1000px; padding: 1rem 1.25rem 6rem; margin: 0 auto; }
+.bespoke-form-section > h2, .cake-request-success h2 { font: 500 clamp(2.5rem, 4vw, 4rem)/1.1 var(--font-display), Georgia, serif; }
+.cake-request-notice { background: var(--blush); border-left: 3px solid var(--coral); padding: 1rem; line-height: 1.6; }
+.cake-request-fields { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.25rem; margin: 2rem 0; }
+.cake-request-fields label { display: flex; flex-direction: column; gap: .5rem; font-weight: 600; font-size: .9rem; }
+.cake-request-fields input, .cake-request-fields textarea, .cake-request-fields select { width: 100%; padding: .9rem; border: 1px solid var(--line); border-radius: 4px; background: #fff; color: var(--ink); font: inherit; }
+.cake-request-wide { grid-column: 1 / -1; }
+.cake-request-success { padding: 2rem; background: var(--blush); }
+@media (max-width: 720px) { .bespoke-steps, .cake-request-fields { grid-template-columns: 1fr; } .cake-request-wide { grid-column: auto; } }
