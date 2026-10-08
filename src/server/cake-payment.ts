@@ -31,6 +31,8 @@ export async function quoteCakeRequest(requestId: string, amountCents: number) {
 
 export async function prepareCakePaymentSession(requestId: string) {
   if (!paymentsEnabled()) throw new Error("PAYMENTS_DISABLED");
+  // New cake payments are test-only until a separate production release is approved.
+  if (!process.env.STRIPE_SECRET_KEY?.startsWith("sk_test_")) throw new Error("CAKE_PAYMENT_TEST_MODE_ONLY");
   if (process.env.CAKE_PAYMENT_WORKFLOW_ENABLED !== "true") throw new Error("WORKFLOW_DISABLED");
   const sql = database();
   const rows = await sql`
@@ -124,9 +126,13 @@ export async function reconcileCakePayment(event: CakePaymentEvent) {
           where cake_request_id=${requestId} and state='held' and expires_at_utc > now()
           returning reservation_id
         `;
-        if (!confirmed[0]) throw new Error("HOLD_EXPIRED_DURING_RECONCILIATION");
-        await tx`update cake_request_payment set state='paid', paid_at_utc=now(), updated_at_utc=now() where cake_request_id=${requestId}`;
-        outcome = "confirmed";
+        if (!confirmed[0]) {
+          await tx`update cake_request_payment set state='manual_review', updated_at_utc=now() where cake_request_id=${requestId}`;
+          outcome = "manual_review";
+        } else {
+          await tx`update cake_request_payment set state='paid', paid_at_utc=now(), updated_at_utc=now() where cake_request_id=${requestId}`;
+          outcome = "confirmed";
+        }
     } else if (decision === "manual_review") {
       // A paid checkout without a valid hold is an exception, not a booking.
       await tx`update cake_request_payment set state='manual_review', updated_at_utc=now() where cake_request_id=${requestId} and state<>'paid'`;
