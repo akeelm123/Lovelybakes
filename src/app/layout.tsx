@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Fraunces, Inter } from "next/font/google";
+import { Cormorant_Garamond, Inter } from "next/font/google";
 import "./globals.css";
 
 const inter = Inter({
@@ -7,29 +7,31 @@ const inter = Inter({
   subsets: ["latin"],
 });
 
-const fraunces = Fraunces({
+const editorial = Cormorant_Garamond({
   variable: "--font-display",
   subsets: ["latin"],
+  weight: ["400", "500", "600"],
+  style: ["normal", "italic"],
 });
 
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.PUBLIC_APP_URL ?? "https://lovelybakestore.com"),
-  title: "Lovelybakes | Baked with heart in Singapore",
-  description: "Small-batch cakes, tarts and celebration bakes, handcrafted in Singapore.",
+  title: "Lovely Bakes | Celebration Cakes, Beautifully Made",
+  description: "Thoughtfully designed celebration cakes and treats, handcrafted for memorable celebrations.",
   alternates: { canonical: "/" },
   openGraph: {
     type: "website",
     locale: "en_SG",
     url: "/",
-    siteName: "Lovelybakes by Nash",
-    title: "Lovelybakes | Baked with heart in Singapore",
-    description: "Small-batch cakes, tarts and celebration bakes, handcrafted in Singapore.",
+    siteName: "Lovely Bakes",
+    title: "Lovely Bakes | Celebration Cakes, Beautifully Made",
+    description: "Thoughtfully designed celebration cakes and treats, handcrafted for memorable celebrations.",
   },
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="en" className={`${inter.variable} ${fraunces.variable}`}>
+    <html lang="en" className={`${inter.variable} ${editorial.variable}`}>
       <body>{children}</body>
     </html>
   );
