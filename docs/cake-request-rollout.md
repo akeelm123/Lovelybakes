@@ -8,7 +8,7 @@ This work is intentionally additive. Do not replace the production Stripe checko
 - Admin GET /api/admin/cake-requests lists recent requests.
 - Admin PATCH accepts only reviewing or declined with optimistic version matching.
 - Migrations 013 and 014 define requests, weekly capacity and reservation structures.
-- Admin capacity holds and quote storage are implemented behind separate feature flags. A dedicated Stripe-signed webhook reconciliation handler exists but has no payment-session creation path yet. No payment link is issued or sent, and customer notifications remain unimplemented.
+- Admin capacity holds and quote storage are implemented behind separate feature flags. A dedicated Stripe-signed webhook reconciliation handler and administrator-only Stripe test Checkout session creator exist. Checkout links are shown to administrators but are not automatically sent. Cake-request-specific customer message templates and tests exist, but they are not connected to a notification outbox or delivery service.
 
 ## Before enabling intake
 1. Apply and verify migrations 013 and 014 in an isolated preview database, not the production database.
@@ -45,3 +45,17 @@ A request is never a booking. Only a successful verified payment against an appr
 - The webhook confirmation SQL now checks that the reservation is still held and unexpired at database-write time. A hold that expires at the boundary is sent to manual review, not confirmed.
 - npm ci previously reported 10 dependency advisories (9 high, 1 critical). The affected packages and runtime exposure have not yet been triaged; do not merge without an npm audit and remediation review.
 - Still unverified: isolated Postgres migrations, transaction concurrency, signed Stripe webhook integration, expiry worker races, refund/exception handling, and email notifications. Do not enable CAKE_REQUEST_INTAKE_ENABLED, CAKE_CAPACITY_RESERVATIONS_ENABLED or CAKE_PAYMENT_WORKFLOW_ENABLED in production.
+
+## Staging verification update — 9 October 2026
+- Latest verified staging deployment for the communication test workflow: Vercel READY at commit f466e7794076743d9039ee43d6749badfc9a7022. READY means the deployment completed, not that database-backed requests or payments have passed integration testing.
+- Separate cake-request communication templates and tests cover request receipt, payment invitation, confirmed booking, manual review, HTTPS links and HTML escaping. They are **not yet wired to delivery**. Never claim that customers receive these messages.
+- The isolated staging database previously failed authentication and the staging snapshot fallback prevents operational testing. Database credentials and schema state must be verified before enabling request intake.
+- Admin request refresh and decline confirmation were added; manual-review payment warning is shown to staff.
+- The full Option B logo is deliberately deferred until final visual UAT by the site owner.
+
+### Operational go/no-go evidence required
+1. Confirm the database is an **isolated preview instance**, check connection and inspect applied migrations 013–015. Do not run migrations on the production database.
+2. Confirm authentication and MFA, request intake validation and deduplication, concurrent weekly capacity reservations, expired holds and release behaviour.
+3. Test Stripe **test-mode** Checkout creation, webhook signature validation, replay/idempotency, payment success, expired session, late success/manual review and reconciliation errors.
+4. Implement a separate cake-request notification outbox and delivery controls. Only send booking confirmation after verified payment **and** confirmed reservation. Add opt-in/out and data-retention handling as applicable.
+5. Resolve dependency audit findings, validate tests and build, document refund and cancellation operations, and secure explicit owner approval before enabling flags or merging to production.
