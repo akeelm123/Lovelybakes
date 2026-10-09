@@ -19,7 +19,7 @@ export function CakeNotificationMonitor() {
   const [loading, setLoading] = useState(false);
 
   async function refresh(signal?: AbortSignal) {
-    setLoading(true);
+    if (!signal) setLoading(true);
     try {
       const response = await fetch("/api/admin/cake-notifications", { cache: "no-store", signal });
       const body = await response.json();
@@ -34,7 +34,8 @@ export function CakeNotificationMonitor() {
 
   useEffect(() => {
     const controller = new AbortController();
-    void refresh(controller.signal);
+    // Defer the fetch to a microtask so state updates occur asynchronously.
+    void Promise.resolve().then(() => refresh(controller.signal));
     return () => controller.abort();
   }, []);
 
