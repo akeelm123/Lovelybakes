@@ -9,6 +9,7 @@ on:
       - 'src/components/cake-notification-monitor.tsx'
       - 'src/server/cake-request-notifications.ts'
       - 'src/app/api/admin/cake-notifications/**'
+      - 'src/app/api/admin/cake-database-readiness/**'
       - 'src/app/api/admin/cake-**'
       - 'src/app/api/cake-**'
       - 'src/app/admin/cake-requests/**'
