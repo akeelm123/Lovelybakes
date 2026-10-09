@@ -14,7 +14,7 @@ export async function GET() {
     capacityReservationsEnabled: process.env.CAKE_CAPACITY_RESERVATIONS_ENABLED === "true",
     paymentWorkflowEnabled: process.env.CAKE_PAYMENT_WORKFLOW_ENABLED === "true",
     stripeTestKeyConfigured: process.env.STRIPE_SECRET_KEY?.startsWith("sk_test_") ?? false,
-    stripeWebhookConfigured: Boolean(process.env.STRIPE_WEBHOOK_SECRET),
+    cakeStripeWebhookConfigured: Boolean(process.env.CAKE_STRIPE_WEBHOOK_SECRET?.startsWith("whsec_")),
     publicAppUrlConfigured: Boolean(process.env.PUBLIC_APP_URL),
   };
   const operational = checks.databaseConnectionSettingsPresent && checks.administratorLoginConfigured &&
@@ -23,7 +23,7 @@ export async function GET() {
     mode: "uat",
     operationalConfigurationPresent: operational,
     paymentTestingConfigurationPresent: operational && checks.paymentWorkflowEnabled &&
-      checks.stripeTestKeyConfigured && checks.stripeWebhookConfigured,
+      checks.stripeTestKeyConfigured && checks.cakeStripeWebhookConfigured,
     checks,
     note: "Configuration presence only. Does not verify database connectivity, isolation, migrations, authentication, webhook delivery, or end-to-end readiness.",
   }, { headers: { "Cache-Control": "no-store" } });
