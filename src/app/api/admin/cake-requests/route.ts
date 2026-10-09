@@ -1,5 +1,6 @@
 import { requireAdmin, AuthorizationError } from "@/server/auth";
 import { database } from "@/server/database";
+import { cakeTransactionalDatabaseReady } from "@/domain/cake-environment";
 import { problem, safeJson } from "@/server/http";
 import { z } from "zod";
 
@@ -32,6 +33,7 @@ export async function GET(request: Request) {
 export async function PATCH(request: Request) {
   try {
     const admin = await requireAdmin(request);
+    if (process.env.CAKE_REQUEST_INTAKE_ENABLED !== "true" || !cakeTransactionalDatabaseReady()) return problem(503, "CAKE_WORKFLOW_DISABLED", "Cake request updates require an enabled transactional workflow.");
     if (!admin.sub) return problem(403, "MISSING_SUBJECT", "Identified administrator required.");
     let raw: unknown;
     try { raw = await safeJson(request, 8192); }
