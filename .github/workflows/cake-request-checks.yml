@@ -29,7 +29,7 @@ jobs:
           node-version: '22'
           cache: npm
       - run: npm ci
-      - run: npx vitest run src/domain/cake-payment-policy.test.ts src/domain/cake-capacity.test.ts src/domain/cake-request-notification.test.ts src/domain/cake-environment.test.ts
+      - run: npx vitest run src/domain/cake-payment-policy.test.ts src/domain/cake-capacity.test.ts src/domain/cake-request-notification.test.ts src/domain/cake-environment.test.ts src/domain/cake-migrations.test.ts
       - run: npm run lint
       - run: npm run build
       # Keep the security audit mandatory, but do not let it hide build failures.
