@@ -1,4 +1,5 @@
 import type Stripe from "stripe";
+import { cakeTransactionalDatabaseReady } from "@/domain/cake-environment";
 import { verifiedStripeEvent } from "@/server/payments";
 import { reconcileCakePayment } from "@/server/cake-payment";
 export const runtime = "nodejs";
@@ -7,6 +8,7 @@ export const runtime = "nodejs";
 // This endpoint accepts Stripe-signed events only, never browser claims of payment.
 export async function POST(request: Request) {
   if (process.env.CAKE_PAYMENT_WORKFLOW_ENABLED !== "true") return new Response("Not enabled", { status: 503 });
+  if (!cakeTransactionalDatabaseReady()) return new Response("Cake database unavailable", { status: 503 });
   const signature = request.headers.get("stripe-signature");
   if (!signature) return new Response("Missing signature", { status: 400 });
   let event: Stripe.Event;
