@@ -130,8 +130,7 @@ export async function reconcileCakePayment(event: CakePaymentEvent) {
         if (!confirmed[0]) {
           await tx`update cake_request_payment set state='manual_review', updated_at_utc=now() where cake_request_id=${requestId}`;
           await enqueueCakeManualReview(tx, requestId);
-          await enqueueCakeManualReview(tx, requestId);
-      outcome = "manual_review";
+          outcome = "manual_review";
         } else {
           await tx`update cake_request_payment set state='paid', paid_at_utc=now(), updated_at_utc=now() where cake_request_id=${requestId}`;
           await enqueueVerifiedCakeBookingConfirmation(tx, requestId);
@@ -140,6 +139,7 @@ export async function reconcileCakePayment(event: CakePaymentEvent) {
     } else if (decision === "manual_review") {
       // A paid checkout without a valid hold is an exception, not a booking.
       await tx`update cake_request_payment set state='manual_review', updated_at_utc=now() where cake_request_id=${requestId} and state<>'paid'`;
+      await enqueueCakeManualReview(tx, requestId);
       outcome = "manual_review";
     } else if (decision === "expire_session") {
       await tx`update cake_request_payment set state='expired', updated_at_utc=now() where cake_request_id=${requestId}`;
