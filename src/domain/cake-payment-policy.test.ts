@@ -61,3 +61,4 @@ describe("Stripe checkout expiry", () => {
     expect(() => checkoutExpirySeconds(now + 20 * 60_000, now)).toThrow("HOLD_TOO_SHORT");
   });
 });
+
