@@ -82,7 +82,7 @@ export function Storefront({ products, preview = true, content = defaultContent,
     <a className="skip-link" href="#bakes">Skip to cakes</a>
     <div className="announcement">{content.announcement}</div>
     <header className="site-header">
-      <a className="brand" href="#top" aria-label="Lovelybakes home"><Image unoptimized src={content.logoImage} alt="" width={60} height={60} /><span><strong>{content.brandName}</strong><small>{content.brandByline}</small></span></a>
+      <a className="brand brand-lockup" href="#top" aria-label="Lovely Bakes home"><span className="brand-mark" aria-hidden="true">LB</span><span className="brand-wordmark"><strong>{content.brandName}</strong><small>{content.brandByline}</small></span></a>
       <nav className="editorial-nav" aria-label="Primary navigation">
         <a href="#categories-title">Shop</a>
         <a href="/bespoke">Bespoke</a>
