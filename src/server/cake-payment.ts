@@ -1,5 +1,6 @@
 import "server-only";
 import { database } from "@/server/database";
+import { enqueueVerifiedCakeBookingConfirmation } from "@/server/cake-request-notifications";
 import { stripeClient, paymentsEnabled } from "@/server/payments";
 import type { CakePaymentEvent } from "@/domain/cake-payment";
 import { checkoutExpirySeconds, paymentOutcome, type CakePaymentState, type CapacityHoldState } from "@/domain/cake-payment-policy";
@@ -131,6 +132,7 @@ export async function reconcileCakePayment(event: CakePaymentEvent) {
           outcome = "manual_review";
         } else {
           await tx`update cake_request_payment set state='paid', paid_at_utc=now(), updated_at_utc=now() where cake_request_id=${requestId}`;
+          await enqueueVerifiedCakeBookingConfirmation(tx, requestId);
           outcome = "confirmed";
         }
     } else if (decision === "manual_review") {
