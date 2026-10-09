@@ -77,3 +77,10 @@ A request is never a booking. Only a successful verified payment against an appr
 - The audit recommends upgrading Next.js to at least `16.4.0` (outside the then-declared dependency range) and updating sharp and source-map-js. Resolve and commit both `package.json` and `package-lock.json` together, then verify `npm ci`, Vitest, lint, build and audit. Do not suppress or bypass the audit.
 - CI has been reordered so lint/build run before the still-mandatory audit. A Vercel `READY` deployment does not establish that this security gate passed.
 - Do not approve a production merge while the audit fails.
+
+## Verified CI and deployment update — 9 October 2026
+- Dependency remediation landed on the development branch: `next@16.4.0`, `sharp@0.35.5`, `eslint-config-next@16.4.0`, and refreshed lockfile.
+- GitHub Actions run **37939249839** completed successfully: `npm ci`, four cake-domain Vitest suites, ESLint, Next.js build and `npm audit --omit=dev --audit-level=high` all passed. The earlier audit findings above are historical and no longer open in this run.
+- Staging deployment **dpl_Fhqi2cdEbCjiQwtEeaWnSA2xtxHq** was confirmed **READY** for commit `f834717203c08e4b7e40c8b5abc25844196b5e7d`. A ready build is not operational booking UAT.
+- Outstanding operational blocker: staging branch has snapshot fallback and no verified isolated transactional `DATABASE_URL`. Do not turn on feature flags or claim migrations 013–016 are applied.
+- The public UAT readiness endpoint still reports configuration presence rather than live connectivity. A planned change to include snapshot-aware readiness was not committed because repository tooling blocked the write. Its output must not be treated as operational authorisation.
