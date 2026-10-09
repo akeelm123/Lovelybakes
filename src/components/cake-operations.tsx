@@ -100,9 +100,9 @@ export function CakeOperations() {
           {item.status === "received" && <button disabled={busy} onClick={() => action(() => api("/api/admin/cake-requests", "PATCH", {
             requestId: item.requestId, status: "reviewing", version: item.version
           }))}>Start review</button>}
-          {["received", "reviewing"].includes(item.status) && <button disabled={busy} onClick={() => action(() => api("/api/admin/cake-requests", "PATCH", {
+          {["received", "reviewing"].includes(item.status) && <button disabled={busy} onClick={() => { if (window.confirm(`Decline the cake request for ${item.customerName}? This does not notify the customer automatically.`)) void action(() => api("/api/admin/cake-requests", "PATCH", {
             requestId: item.requestId, status: "declined", version: item.version
-          }))}>Decline request</button>}
+          })); }}>Decline request</button>}
           {item.status === "reviewing" && <>
             <label>Slots <input type="number" min="1" max="20" value={slotsById[item.requestId] ?? "1"}
               onChange={event => setSlotsById(prev => ({ ...prev, [item.requestId]: event.target.value }))} /></label>
@@ -117,6 +117,7 @@ export function CakeOperations() {
               requestId: item.requestId, amountCents: Math.round(Number(quoteById[item.requestId]) * 100)
             }))}>Save quote</button>
           </>}
+          {item.paymentState === "manual_review" && <p role="alert"><strong>Manual payment review required.</strong> Check Stripe and the capacity hold before confirming anything with the customer. Do not issue another payment link automatically.</p>}
           {item.paymentState === "quoted" && item.reservationState === "held" && <button disabled={busy} onClick={() => action(async () => {
             const result = await api("/api/admin/cake-payments/session", "POST", { requestId: item.requestId });
             if (result.session?.checkoutUrl) setPaymentLinks(prev => ({ ...prev, [item.requestId]: result.session.checkoutUrl }));
