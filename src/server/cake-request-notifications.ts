@@ -40,3 +40,18 @@ export async function cakeRequestNotificationCounts() {
   `;
   return rows.map(row => ({ status: String(row.status), count: Number(row.count) }));
 }
+
+export async function enqueueCakeManualReview(sql: postgres.TransactionSql, requestId: string) {
+  // A payment exception is not a booking. Enqueue only when the payment
+  // record is in manual review; never send automatically.
+  const rows = await sql`
+    insert into cake_request_notification (notification_id, cake_request_id, message_type, recipient_email)
+    select ${randomUUID()}, r.cake_request_id, 'manual_review', r.customer_email
+    from cake_request r
+    join cake_request_payment p on p.cake_request_id=r.cake_request_id
+    where r.cake_request_id=${requestId} and p.state='manual_review'
+    on conflict (cake_request_id, message_type) do nothing
+    returning notification_id
+  `;
+  return rows.length > 0;
+}
