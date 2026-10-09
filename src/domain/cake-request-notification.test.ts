@@ -22,10 +22,14 @@ describe("cake request communications", () => {
       "https://evil.example/checkout",
       "https://checkout.stripe.com@evil.example/pay",
       "https://checkout.stripe.com:444/pay",
+      "https://checkout.stripe.com.evil.example/pay?redirect=1",
+      "https://checkout.stripe.com%2eattacker.example/pay",
       "javascript:alert(1)",
     ]) {
       expect(() => renderCakeRequestMessage("payment_invitation", { ...input, amountCents: 10000, paymentUrl })).toThrow("VALID_PAYMENT_INVITATION_REQUIRED");
     }
+    expect(() => renderCakeRequestMessage("payment_invitation", { ...input, amountCents: 0, paymentUrl: "https://checkout.stripe.com/test" })).toThrow("VALID_PAYMENT_INVITATION_REQUIRED");
+    expect(() => renderCakeRequestMessage("payment_invitation", { ...input, amountCents: 10.5, paymentUrl: "https://checkout.stripe.com/test" })).toThrow("VALID_PAYMENT_INVITATION_REQUIRED");
     const message = renderCakeRequestMessage("payment_invitation", { ...input, amountCents: 10000, paymentUrl: "https://checkout.stripe.com/test" });
     expect(message.text).toContain("only confirmed after successful payment");
   });
