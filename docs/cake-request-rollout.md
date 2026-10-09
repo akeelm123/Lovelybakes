@@ -66,3 +66,8 @@ A request is never a booking. Only a successful verified payment against an appr
 - **Do not copy production `DATABASE_URL` or Stripe credentials into preview.** First verify the staging connection refers to an isolated database, then bind it to `DATABASE_URL` only for the staging branch and test connectivity/migrations. Never expose secrets in GitHub, logs or screenshots.
 - Some preview integration credentials were flagged by Vercel as `readable-secret`; review their exposure and rotation with the owner before go-live.
 - Migration 016 is required for the new notification outbox; no evidence yet that it has been applied.
+
+## Cake-specific Stripe webhook isolation
+- The cake webhook now requires `CAKE_STRIPE_WEBHOOK_SECRET` (`whsec_...`) and a `sk_test_...` Stripe secret key. It no longer accepts the legacy `STRIPE_WEBHOOK_SECRET` signing secret.
+- Create a **separate Stripe test-mode webhook endpoint** for `/api/cake-payments/webhook` in the isolated staging Stripe account, subscribing to `checkout.session.completed` and `checkout.session.expired`. Bind its signing secret to the staging branch only. Do not reuse the production webhook secret.
+- Leave `CAKE_PAYMENT_WORKFLOW_ENABLED=false` until the isolated database, schema, signed webhook, idempotent retries, late-payment review, and customer messaging have been tested.
