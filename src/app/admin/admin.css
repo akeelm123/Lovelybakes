@@ -65,3 +65,22 @@
 
 .readiness { display:grid; gap:.7rem; }.readiness div{display:flex;justify-content:space-between;border-bottom:1px solid #eadfe4;padding:.8rem 0}.readiness dd{font-weight:700}
 .notification-card{display:flex;justify-content:space-between;gap:1rem;align-items:center}.notification-card p{margin:.4rem 0}.notification-card>div:last-child{display:grid;gap:.55rem;justify-items:end}.delivery-status{text-transform:capitalize;font-weight:700;border-radius:99px;padding:.35rem .65rem;background:#eee}.delivery-sent{background:#dff3e7;color:#286340}.delivery-failed{background:#f8dfe4;color:#8c2840}.delivery-pending{background:#fff1cd;color:#735b14}@media(max-width:760px){.notification-card{align-items:flex-start}.notification-card>div:last-child{justify-items:start}}
+
+/* Cake operations: scoped to avoid changing existing product studio styles. */
+.cake-operations{max-width:1100px;margin:0 auto;padding:2rem clamp(1rem,4vw,3rem) 5rem;color:var(--ink,#432b38)}
+.cake-operations h1{max-width:none;font-size:clamp(2.3rem,5vw,4rem);line-height:1.1}
+.cake-operations h2{font-size:2rem;margin:2.5rem 0 1rem}
+.cake-operations h3{font-size:1.45rem;margin:0 0 .6rem}
+.cake-operations section{margin-top:2rem}
+.cake-operations form,.cake-operations-buttons,.cake-operations-actions{display:flex;flex-wrap:wrap;align-items:end;gap:1rem}
+.cake-operations form label,.cake-operations-buttons label{display:grid;gap:.35rem;font-weight:650}
+.cake-operations input:not([type=checkbox]){padding:.65rem;border:1px solid var(--line,#eadfdc);border-radius:8px;max-width:190px}
+.cake-operations button{border:0;border-radius:8px;background:var(--coral,#c92d72);color:#fff;padding:.7rem 1rem;cursor:pointer;font-weight:700}
+.cake-operations button:disabled{opacity:.5;cursor:not-allowed}
+.cake-operations-table-wrap{overflow-x:auto}
+.cake-operations table{width:100%;border-collapse:collapse;min-width:550px}
+.cake-operations th,.cake-operations td{padding:.8rem;text-align:left;border-bottom:1px solid var(--line,#eadfdc)}
+.cake-operations-request{border:1px solid var(--line,#eadfdc);border-radius:14px;background:#fff;padding:1.5rem;margin:1rem 0;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:1.5rem;overflow-wrap:anywhere}
+.cake-operations-request p{line-height:1.5}
+.cake-operations-buttons{max-width:270px;align-content:start}
+@media(max-width:700px){.cake-operations-request{grid-template-columns:1fr}.cake-operations-buttons{max-width:none}}

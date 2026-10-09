@@ -4,7 +4,7 @@ import postgres from "postgres";
 let client: ReturnType<typeof postgres> | undefined;
 
 export function databaseConfigured(): boolean {
-  return Boolean(process.env.DATABASE_URL);
+  return Boolean(process.env.DATABASE_URL) && process.env.UAT_DATABASE_FALLBACK !== "snapshot";
 }
 
 export function database() {

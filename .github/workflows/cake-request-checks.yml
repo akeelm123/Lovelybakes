@@ -1,0 +1,36 @@
+name: Cake request checks
+on:
+  pull_request:
+    paths:
+      - 'src/domain/cake-**'
+      - 'src/domain/cake-request-notification*'
+      - 'src/server/cake-**'
+      - 'src/components/cake-operations.tsx'
+      - 'src/components/cake-notification-monitor.tsx'
+      - 'src/components/cake-database-readiness.tsx'
+      - 'src/server/cake-request-notifications.ts'
+      - 'src/app/api/admin/cake-notifications/**'
+      - 'src/app/api/admin/cake-database-readiness/**'
+      - 'src/app/api/admin/cake-**'
+      - 'src/app/api/cake-**'
+      - 'src/app/admin/cake-requests/**'
+      - 'migrations/01[3456]_**'
+      - '.github/workflows/cake-request-checks.yml'
+  workflow_dispatch:
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci
+      - run: npx vitest run src/domain/cake-payment-policy.test.ts src/domain/cake-capacity.test.ts src/domain/cake-request-notification.test.ts src/domain/cake-environment.test.ts src/domain/cake-migrations.test.ts
+      - run: npm run lint
+      - run: npm run build
+      # Keep the security audit mandatory, but do not let it hide build failures.
+      - run: npm audit --omit=dev --audit-level=high
