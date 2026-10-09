@@ -14,8 +14,19 @@ const escapeHtml = (value: string) =>
     "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;",
   }[char]!));
 
+function verifiedStripeCheckoutUrl(value: string | undefined): boolean {
+  if (!value) return false;
+  try {
+    const url = new URL(value);
+    return url.protocol === "https:" && url.hostname === "checkout.stripe.com" &&
+      url.username === "" && url.password === "" && url.port === "";
+  } catch {
+    return false;
+  }
+}
+
 export function renderCakeRequestMessage(type: CakeRequestMessageType, input: CakeRequestMessageInput) {
-  if (type === "payment_invitation" && (!input.paymentUrl || !/^https:\/\//.test(input.paymentUrl) || !Number.isSafeInteger(input.amountCents) || (input.amountCents ?? 0) <= 0)) {
+  if (type === "payment_invitation" && (!verifiedStripeCheckoutUrl(input.paymentUrl) || !Number.isSafeInteger(input.amountCents) || (input.amountCents ?? 0) <= 0)) {
     throw new Error("VALID_PAYMENT_INVITATION_REQUIRED");
   }
   const reference = input.requestId.slice(0, 8).toUpperCase();
