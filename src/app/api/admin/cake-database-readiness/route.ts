@@ -20,7 +20,7 @@ export async function GET(request: Request) {
     await requireAdmin(request);
     if (process.env.UAT_DATABASE_FALLBACK === "snapshot") {
       return Response.json({
-        operational: false,
+        schemaReady: false,
         databaseConnected: false,
         reason: "SNAPSHOT_FALLBACK_ACTIVE",
         note: "Disable snapshot fallback only after confirming an isolated staging database.",
@@ -28,7 +28,7 @@ export async function GET(request: Request) {
     }
     if (!process.env.DATABASE_URL) {
       return Response.json({
-        operational: false,
+        schemaReady: false,
         databaseConnected: false,
         reason: "DATABASE_URL_MISSING",
       }, { headers: { "Cache-Control": "no-store" } });
@@ -45,7 +45,7 @@ export async function GET(request: Request) {
     const present = new Set(rows.map(row => String(row.name)));
     const migrations = requiredTables.map(table => ({ table, present: present.has(table) }));
     return Response.json({
-      operational: migrations.every(item => item.present),
+      schemaReady: migrations.every(item => item.present),
       databaseConnected: true,
       schemaChecks: migrations,
       note: "Schema presence only; not proof of database isolation, migration correctness, webhook or concurrency safety.",
