@@ -1,4 +1,5 @@
 import { cakeRequestSchema } from "@/domain/cake-request";
+import { cakeTransactionalDatabaseReady } from "@/domain/cake-environment";
 import { createCakeRequest } from "@/server/cake-requests";
 import { allowRequest, requestKey } from "@/server/rate-limit";
 import { problem, safeJson } from "@/server/http";
@@ -8,6 +9,7 @@ export async function POST(request: Request) {
   if (process.env.CAKE_REQUEST_INTAKE_ENABLED !== "true") {
     return problem(503, "REQUESTS_NOT_OPEN", "Cake requests are not open online yet.");
   }
+  if (!cakeTransactionalDatabaseReady()) return problem(503, "STAGING_DATABASE_NOT_READY", "Cake requests are temporarily unavailable.");
   try {
     if (!await allowRequest(`cake-request:${requestKey(request)}`, 5, 60_000)) {
       return problem(429, "RATE_LIMITED", "Please wait before sending another request.");
