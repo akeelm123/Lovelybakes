@@ -1,12 +1,14 @@
 import "server-only";
 import { randomUUID } from "node:crypto";
 import { database } from "@/server/database";
+import { cakeTransactionalDatabaseReady } from "@/domain/cake-environment";
 import { mondayForDate } from "@/domain/cake-capacity";
 
 type ReserveInput = { requestId: string; slots: number; version: number };
 type ConfigureInput = { weekStartDate: string; slotLimit: number; paused: boolean };
 
 export async function configureCapacity(input: ConfigureInput) {
+  if (process.env.CAKE_CAPACITY_RESERVATIONS_ENABLED !== "true" || !cakeTransactionalDatabaseReady()) throw new Error("CAPACITY_WORKFLOW_DISABLED");
   if (mondayForDate(input.weekStartDate) !== input.weekStartDate) throw new Error("WEEK_MUST_START_MONDAY");
   return database().begin(async (tx) => {
     await tx`
@@ -35,6 +37,7 @@ export async function configureCapacity(input: ConfigureInput) {
 }
 
 export async function reserveCakeCapacity(input: ReserveInput) {
+  if (process.env.CAKE_CAPACITY_RESERVATIONS_ENABLED !== "true" || !cakeTransactionalDatabaseReady()) throw new Error("CAPACITY_WORKFLOW_DISABLED");
   const sql = database();
   return sql.begin(async (tx) => {
     const request = await tx`
@@ -79,6 +82,7 @@ export async function reserveCakeCapacity(input: ReserveInput) {
 }
 
 export async function expireCapacityHolds() {
+  if (process.env.CAKE_CAPACITY_RESERVATIONS_ENABLED !== "true" || !cakeTransactionalDatabaseReady()) throw new Error("CAPACITY_WORKFLOW_DISABLED");
   const rows = await database()`
     update cake_capacity_reservation set state='expired', updated_at_utc=now()
     where state='held' and expires_at_utc <= now()
