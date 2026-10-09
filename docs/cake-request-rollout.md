@@ -84,3 +84,7 @@ A request is never a booking. Only a successful verified payment against an appr
 - Staging deployment **dpl_Fhqi2cdEbCjiQwtEeaWnSA2xtxHq** was confirmed **READY** for commit `f834717203c08e4b7e40c8b5abc25844196b5e7d`. A ready build is not operational booking UAT.
 - Outstanding operational blocker: staging branch has snapshot fallback and no verified isolated transactional `DATABASE_URL`. Do not turn on feature flags or claim migrations 013–016 are applied.
 - The public UAT readiness endpoint still reports configuration presence rather than live connectivity. A planned change to include snapshot-aware readiness was not committed because repository tooling blocked the write. Its output must not be treated as operational authorisation.
+
+## Payment edge-case regression coverage
+- GitHub Actions run **37939899571** passed after adding tests for missing/expired capacity holds, unexpected payment states, duplicate expiry and Checkout hold-expiry boundaries. This is unit-level policy coverage, **not** proof of Stripe webhook delivery or concurrent database safety.
+- Operational acceptance still requires an isolated database, schema migrations, test-mode Stripe signing secret and authenticated administrator access. All customer-facing sending remains disabled.
