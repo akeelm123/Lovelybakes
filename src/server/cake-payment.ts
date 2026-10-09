@@ -1,5 +1,6 @@
 import "server-only";
 import { database } from "@/server/database";
+import { cakeTransactionalDatabaseReady } from "@/domain/cake-environment";
 import { enqueueVerifiedCakeBookingConfirmation, enqueueCakeManualReview } from "@/server/cake-request-notifications";
 import { stripeClient } from "@/server/payments";
 import type { CakePaymentEvent } from "@/domain/cake-payment";
@@ -8,6 +9,7 @@ import { checkoutExpirySeconds, paymentOutcome, type CakePaymentState, type Capa
 // This service deliberately does not create or send payment links yet.
 // It prepares approved amounts and reconciles signed Stripe webhook events.
 export async function quoteCakeRequest(requestId: string, amountCents: number) {
+  if (process.env.CAKE_PAYMENT_WORKFLOW_ENABLED !== "true" || !cakeTransactionalDatabaseReady()) throw new Error("CAKE_PAYMENT_WORKFLOW_DISABLED");
   return database().begin(async tx => {
     const rows = await tx`
       select r.status, c.state, c.expires_at_utc as expires
@@ -31,6 +33,7 @@ export async function quoteCakeRequest(requestId: string, amountCents: number) {
 
 
 export async function prepareCakePaymentSession(requestId: string) {
+  if (!cakeTransactionalDatabaseReady()) throw new Error("STAGING_DATABASE_NOT_READY");
   if (!process.env.CAKE_STRIPE_WEBHOOK_SECRET?.startsWith("whsec_")) throw new Error("CAKE_WEBHOOK_NOT_CONFIGURED");
   // New cake payments are test-only until a separate production release is approved.
   if (!process.env.STRIPE_SECRET_KEY?.startsWith("sk_test_")) throw new Error("CAKE_PAYMENT_TEST_MODE_ONLY");
@@ -94,6 +97,7 @@ export async function prepareCakePaymentSession(requestId: string) {
 }
 
 export async function reconcileCakePayment(event: CakePaymentEvent) {
+  if (process.env.CAKE_PAYMENT_WORKFLOW_ENABLED !== "true" || !cakeTransactionalDatabaseReady()) throw new Error("CAKE_PAYMENT_WORKFLOW_DISABLED");
   const requestId = event.session.client_reference_id;
   if (!requestId || event.session.metadata?.cakeRequestId !== requestId) throw new Error("PAYMENT_REFERENCE_MISMATCH");
   return database().begin(async tx => {
