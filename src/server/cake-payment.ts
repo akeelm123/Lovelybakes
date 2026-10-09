@@ -1,7 +1,7 @@
 import "server-only";
 import { database } from "@/server/database";
-import { enqueueVerifiedCakeBookingConfirmation } from "@/server/cake-request-notifications";
-import { stripeClient, paymentsEnabled } from "@/server/payments";
+import { enqueueVerifiedCakeBookingConfirmation, enqueueCakeManualReview } from "@/server/cake-request-notifications";
+import { stripeClient } from "@/server/payments";
 import type { CakePaymentEvent } from "@/domain/cake-payment";
 import { checkoutExpirySeconds, paymentOutcome, type CakePaymentState, type CapacityHoldState } from "@/domain/cake-payment-policy";
 
@@ -31,7 +31,7 @@ export async function quoteCakeRequest(requestId: string, amountCents: number) {
 
 
 export async function prepareCakePaymentSession(requestId: string) {
-  if (!paymentsEnabled()) throw new Error("PAYMENTS_DISABLED");
+  if (!process.env.CAKE_STRIPE_WEBHOOK_SECRET?.startsWith("whsec_")) throw new Error("CAKE_WEBHOOK_NOT_CONFIGURED");
   // New cake payments are test-only until a separate production release is approved.
   if (!process.env.STRIPE_SECRET_KEY?.startsWith("sk_test_")) throw new Error("CAKE_PAYMENT_TEST_MODE_ONLY");
   if (process.env.CAKE_PAYMENT_WORKFLOW_ENABLED !== "true") throw new Error("WORKFLOW_DISABLED");
@@ -129,7 +129,9 @@ export async function reconcileCakePayment(event: CakePaymentEvent) {
         `;
         if (!confirmed[0]) {
           await tx`update cake_request_payment set state='manual_review', updated_at_utc=now() where cake_request_id=${requestId}`;
-          outcome = "manual_review";
+          await enqueueCakeManualReview(tx, requestId);
+          await enqueueCakeManualReview(tx, requestId);
+      outcome = "manual_review";
         } else {
           await tx`update cake_request_payment set state='paid', paid_at_utc=now(), updated_at_utc=now() where cake_request_id=${requestId}`;
           await enqueueVerifiedCakeBookingConfirmation(tx, requestId);
