@@ -338,3 +338,62 @@ h1 { font-size: clamp(3rem, 5.2vw, 5rem); font-weight: 500; line-height: 1.05; m
 .cake-request-wide { grid-column: 1 / -1; }
 .cake-request-success { padding: 2rem; background: var(--blush); }
 @media (max-width: 720px) { .bespoke-steps, .cake-request-fields { grid-template-columns: 1fr; } .cake-request-wide { grid-column: auto; } }
+
+
+/* Approved Lovely Bakes brand system — Editorial Patisserie */
+:root {
+  --cream: #fffdf8;
+  --paper: #fffdf8;
+  --ink: #2c2725;
+  --muted: #716662;
+  --coral: #b72c69;
+  --coral-dark: #8e1f50;
+  --sage: #2d9d9a;
+  --line: #eadfd9;
+  --gold: #b08a4a;
+  --blush: #f9e7ef;
+  --brand-teal-soft: #e4f3f1;
+  --brand-gold-soft: #f4ecdc;
+}
+body { background: var(--cream); color: var(--ink); }
+.announcement { background: var(--coral); color: #fff; letter-spacing: .04em; }
+.site-header { background: rgb(255 253 248 / 96%); color: var(--ink); border-bottom: 1px solid rgba(176,138,74,.28); box-shadow: 0 8px 28px rgba(44,39,37,.05); padding-top: .85rem; }
+.brand-lockup { gap: .8rem; }
+.brand-mark { display: grid; place-items: center; width: 48px; height: 48px; flex: 0 0 48px; border: 1px solid var(--gold); border-radius: 50%; color: var(--coral); background: var(--paper); font: 600 1.05rem/1 var(--font-display), serif; letter-spacing: .08em; }
+.brand-wordmark strong { color: var(--coral); font-size: 1.75rem; font-weight: 600; letter-spacing: -.02em; }
+.brand-wordmark small { color: var(--gold); font-family: var(--font-sans), sans-serif; font-size: .62rem; font-style: normal; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; }
+.editorial-nav a, .header-actions a { color: var(--ink); }
+.editorial-nav a:hover, .header-actions a:hover { color: var(--coral); }
+.cart-button { border: 1px solid var(--coral); background: var(--coral); color: #fff; }
+.cart-button:hover { background: var(--coral-dark); }
+.cart-button span { background: #fff; color: var(--coral); }
+.hero { background: linear-gradient(135deg, #fff7f9 0%, #fffdf8 48%, #e8f6f4 100%); }
+.hero-copy { position: relative; }
+.hero-copy::before { content: ""; position: absolute; width: 90px; height: 3px; top: clamp(2rem,5vw,4rem); left: clamp(1.25rem,5vw,5vw); background: linear-gradient(90deg,var(--coral),var(--gold),var(--sage)); }
+.eyebrow { color: var(--coral); }
+.hero-signature { color: var(--sage); }
+.primary-button { background: var(--coral); color: #fff; border-color: var(--coral); }
+.primary-button:hover { background: var(--coral-dark); }
+.underlined-link { text-decoration-color: var(--gold); }
+.editorial-category-card { background: var(--paper); }
+.editorial-category-label { color: var(--ink); }
+.editorial-category-card:nth-child(2) .editorial-category-label,
+.editorial-category-card:nth-child(4) .editorial-category-label { color: var(--sage); }
+.editorial-section-heading h2, .section-heading h2, .editorial-craft-copy h2, .editorial-kind-words h2, .story-band h2 { color: var(--ink); }
+.filter-button[aria-pressed="true"] { background: var(--coral); border-color: var(--coral); }
+.badge { color: var(--sage); font-weight: 700; }
+.photo-tag { color: var(--coral); border: 1px solid rgba(176,138,74,.35); }
+.product-content .primary-button { color: var(--coral); border-color: rgba(183,44,105,.42); background: transparent; }
+.product-content .primary-button:hover { color: #fff; background: var(--coral); }
+.editorial-craft { background: var(--brand-teal-soft); }
+.editorial-pillars > div { border-top-color: var(--gold); }
+.editorial-kind-words { background: var(--brand-gold-soft); }
+.story-band { background: var(--sage); color: #fff; }
+.story-band h2, .story-band .eyebrow, .story-band .underlined-link { color: #fff; }
+.custom-section { background: #f9e7ef; }
+.footer { border-top: 1px solid rgba(176,138,74,.28); background: var(--paper); }
+@media (max-width: 720px) {
+  .site-header { background: rgba(255,253,248,.98); }
+  .brand-wordmark strong { font-size: 1.45rem; }
+  .brand-mark { width: 42px; height: 42px; flex-basis: 42px; }
+}
