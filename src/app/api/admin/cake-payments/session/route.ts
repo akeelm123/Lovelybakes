@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { cakeTransactionalDatabaseReady } from "@/domain/cake-environment";
 import { AuthorizationError, requireAdmin } from "@/server/auth";
 import { prepareCakePaymentSession } from "@/server/cake-payment";
 import { problem, safeJson } from "@/server/http";
@@ -8,6 +9,7 @@ const inputSchema = z.object({ requestId: z.uuid() }).strict();
 export async function POST(request: Request) {
   if (process.env.CAKE_PAYMENT_WORKFLOW_ENABLED !== "true")
     return problem(503, "PAYMENT_WORKFLOW_DISABLED", "Cake payments are not enabled.");
+  if (!cakeTransactionalDatabaseReady()) return problem(503, "STAGING_DATABASE_NOT_READY", "Cake payments require a configured transactional database.");
   try {
     const admin = await requireAdmin(request);
     if (!admin.sub) return problem(403, "MISSING_SUBJECT", "Identified administrator required.");
