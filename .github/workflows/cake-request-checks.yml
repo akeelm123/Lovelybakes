@@ -8,7 +8,7 @@ on:
       - 'src/app/api/admin/cake-**'
       - 'src/app/api/cake-**'
       - 'src/app/admin/cake-requests/**'
-      - 'migrations/01[345]_cake_**'
+      - 'migrations/01[345]_**'
       - '.github/workflows/cake-request-checks.yml'
   workflow_dispatch:
 jobs:
