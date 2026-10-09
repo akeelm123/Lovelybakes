@@ -65,7 +65,7 @@ export function CakeOperations() {
       <p><Link href="/admin">Back to product studio</Link></p>
     </header>
     <div className="cake-operations-actions">
-      <button disabled={busy} onClick={() => action(async () => {})}>Refresh requests</button>
+      <button disabled={busy} onClick={() => action(async () => { await load(); })}>Refresh requests</button>
       <button disabled={busy} onClick={() => action(() => api("/api/admin/cake-capacity/expire", "POST"))}>Clear expired holds</button>
       {message && <p role="status">{message}</p>}
     </div>
