@@ -17,7 +17,7 @@ export function CakeDatabaseReadiness() {
   const [loading, setLoading] = useState(false);
 
   async function refresh(signal?: AbortSignal) {
-    setLoading(true);
+    if (!signal) setLoading(true);
     try {
       const response = await fetch("/api/admin/cake-database-readiness", { cache: "no-store", signal });
       const body: Status = await response.json();
@@ -32,7 +32,8 @@ export function CakeDatabaseReadiness() {
 
   useEffect(() => {
     const controller = new AbortController();
-    void refresh(controller.signal);
+    // Defer the fetch to a microtask so state updates occur asynchronously.
+    void Promise.resolve().then(() => refresh(controller.signal));
     return () => controller.abort();
   }, []);
 
