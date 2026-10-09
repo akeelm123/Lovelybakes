@@ -17,6 +17,15 @@ describe("cake request communications", () => {
   it("requires a valid quote and secure URL before creating a payment invitation", () => {
     expect(() => renderCakeRequestMessage("payment_invitation", input)).toThrow("VALID_PAYMENT_INVITATION_REQUIRED");
     expect(() => renderCakeRequestMessage("payment_invitation", { ...input, amountCents: 10000, paymentUrl: "http://example.com" })).toThrow();
+    for (const paymentUrl of [
+      "https://checkout.stripe.com.evil.example/pay",
+      "https://evil.example/checkout",
+      "https://checkout.stripe.com@evil.example/pay",
+      "https://checkout.stripe.com:444/pay",
+      "javascript:alert(1)",
+    ]) {
+      expect(() => renderCakeRequestMessage("payment_invitation", { ...input, amountCents: 10000, paymentUrl })).toThrow("VALID_PAYMENT_INVITATION_REQUIRED");
+    }
     const message = renderCakeRequestMessage("payment_invitation", { ...input, amountCents: 10000, paymentUrl: "https://checkout.stripe.com/test" });
     expect(message.text).toContain("only confirmed after successful payment");
   });
