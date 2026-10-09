@@ -30,6 +30,7 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npx vitest run src/domain/cake-payment-policy.test.ts src/domain/cake-capacity.test.ts src/domain/cake-request-notification.test.ts src/domain/cake-environment.test.ts
-      - run: npm audit --omit=dev --audit-level=high
       - run: npm run lint
       - run: npm run build
+      # Keep the security audit mandatory, but do not let it hide build failures.
+      - run: npm audit --omit=dev --audit-level=high
