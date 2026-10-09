@@ -59,3 +59,10 @@ A request is never a booking. Only a successful verified payment against an appr
 3. Test Stripe **test-mode** Checkout creation, webhook signature validation, replay/idempotency, payment success, expired session, late success/manual review and reconciliation errors.
 4. Implement a separate cake-request notification outbox and delivery controls. Only send booking confirmation after verified payment **and** confirmed reservation. Add opt-in/out and data-retention handling as applicable.
 5. Resolve dependency audit findings, validate tests and build, document refund and cancellation operations, and secure explicit owner approval before enabling flags or merging to production.
+
+## Preview environment inventory — 9 October 2026
+- Vercel environment metadata shows preview-scoped `STAGING_DATABASE_URL` and `STAGING_DATABASE_URL_UNPOOLED` integration variables, but the app's `database()` reads **`DATABASE_URL`**. No applicable `DATABASE_URL` was visible for the editorial staging branch in the inventory. This is a configuration mismatch, not proof of database connectivity.
+- The branch-scoped `UAT_DATABASE_FALLBACK=snapshot` remains present; storefront visual UAT can work without transactional database operations.
+- **Do not copy production `DATABASE_URL` or Stripe credentials into preview.** First verify the staging connection refers to an isolated database, then bind it to `DATABASE_URL` only for the staging branch and test connectivity/migrations. Never expose secrets in GitHub, logs or screenshots.
+- Some preview integration credentials were flagged by Vercel as `readable-secret`; review their exposure and rotation with the owner before go-live.
+- Migration 016 is required for the new notification outbox; no evidence yet that it has been applied.
