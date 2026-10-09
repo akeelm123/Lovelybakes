@@ -71,3 +71,9 @@ A request is never a booking. Only a successful verified payment against an appr
 - The cake webhook now requires `CAKE_STRIPE_WEBHOOK_SECRET` (`whsec_...`) and a `sk_test_...` Stripe secret key. It no longer accepts the legacy `STRIPE_WEBHOOK_SECRET` signing secret.
 - Create a **separate Stripe test-mode webhook endpoint** for `/api/cake-payments/webhook` in the isolated staging Stripe account, subscribing to `checkout.session.completed` and `checkout.session.expired`. Bind its signing secret to the staging branch only. Do not reuse the production webhook secret.
 - Leave `CAKE_PAYMENT_WORKFLOW_ENABLED=false` until the isolated database, schema, signed webhook, idempotent retries, late-payment review, and customer messaging have been tested.
+
+## Mandatory dependency security gate — 9 October 2026
+- GitHub Actions run `37938190404` passed the four cake-domain Vitest suites but failed `npm audit --omit=dev --audit-level=high` with three findings: **Next.js 16.0.0–16.3.7 (critical)**, **sharp below 0.35.5 (high)**, and **source-map-js 1.0.0–1.2.1 (high)**.
+- The audit recommends upgrading Next.js to at least `16.4.0` (outside the then-declared dependency range) and updating sharp and source-map-js. Resolve and commit both `package.json` and `package-lock.json` together, then verify `npm ci`, Vitest, lint, build and audit. Do not suppress or bypass the audit.
+- CI has been reordered so lint/build run before the still-mandatory audit. A Vercel `READY` deployment does not establish that this security gate passed.
+- Do not approve a production merge while the audit fails.
