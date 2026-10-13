@@ -1,0 +1,483 @@
+{
+  "viewports": [
+    {
+      "width": 1280,
+      "overflow": false,
+      "logo": {
+        "x": 51.1953125,
+        "y": 55.390625,
+        "width": 360,
+        "height": 99,
+        "top": 55.390625,
+        "right": 411.1953125,
+        "bottom": 154.390625,
+        "left": 51.1953125
+      },
+      "story": "rgb(0, 90, 87)",
+      "targets": [
+        {
+          "name": "Shop",
+          "height": 44,
+          "width": 48.0078125
+        },
+        {
+          "name": "Bespoke",
+          "height": 44,
+          "width": 71.6484375
+        },
+        {
+          "name": "About",
+          "height": 44,
+          "width": 53.4140625
+        },
+        {
+          "name": "Cake Care",
+          "height": 44,
+          "width": 83.609375
+        },
+        {
+          "name": "✓All creations",
+          "height": 45.890625,
+          "width": 154.9375
+        },
+        {
+          "name": "✓Cupcakes",
+          "height": 45.890625,
+          "width": 131.3515625
+        },
+        {
+          "name": "✓Celebration cakes",
+          "height": 45.890625,
+          "width": 194.140625
+        },
+        {
+          "name": "Add to bag +",
+          "height": 51.890625,
+          "width": 359.8125
+        },
+        {
+          "name": "Add to bag +",
+          "height": 51.890625,
+          "width": 359.8125
+        },
+        {
+          "name": "Add to bag +",
+          "height": 51.890625,
+          "width": 359.8125
+        },
+        {
+          "name": "Add to bag +",
+          "height": 51.890625,
+          "width": 359.8125
+        },
+        {
+          "name": "Add to bag +",
+          "height": 51.890625,
+          "width": 359.8125
+        },
+        {
+          "name": "Add to bag +",
+          "height": 51.890625,
+          "width": 359.8125
+        },
+        {
+          "name": "Can I request a personalised design?",
+          "height": 46.390625,
+          "width": 872
+        },
+        {
+          "name": "Are these the final prices?",
+          "height": 46.390625,
+          "width": 872
+        },
+        {
+          "name": "Can I place an order on this website?",
+          "height": 46.390625,
+          "width": 872
+        },
+        {
+          "name": "Cakes",
+          "height": 44,
+          "width": 196.6875
+        },
+        {
+          "name": "Cupcakes",
+          "height": 44,
+          "width": 196.6875
+        },
+        {
+          "name": "Celebration Sets",
+          "height": 44,
+          "width": 196.6875
+        },
+        {
+          "name": "Bespoke",
+          "height": 44,
+          "width": 196.6875
+        },
+        {
+          "name": "Cake Care",
+          "height": 44,
+          "width": 196.6796875
+        },
+        {
+          "name": "FAQ",
+          "height": 44,
+          "width": 196.6796875
+        },
+        {
+          "name": "Kind Words",
+          "height": 44,
+          "width": 196.6796875
+        },
+        {
+          "name": "About",
+          "height": 44,
+          "width": 196.6875
+        },
+        {
+          "name": "Contact",
+          "height": 44,
+          "width": 196.6875
+        },
+        {
+          "name": "Privacy",
+          "height": 44,
+          "width": 196.6875
+        },
+        {
+          "name": "Terms",
+          "height": 44,
+          "width": 196.6875
+        }
+      ],
+      "productFont": "16px"
+    },
+    {
+      "width": 390,
+      "overflow": false,
+      "logo": {
+        "x": 12,
+        "y": 70.796875,
+        "width": 214.546875,
+        "height": 59,
+        "top": 70.796875,
+        "right": 226.546875,
+        "bottom": 129.796875,
+        "left": 12
+      },
+      "story": "rgb(0, 90, 87)",
+      "targets": [
+        {
+          "name": "Shop",
+          "height": 44,
+          "width": 47.03125
+        },
+        {
+          "name": "Bespoke",
+          "height": 44,
+          "width": 70.0078125
+        },
+        {
+          "name": "About",
+          "height": 44,
+          "width": 52.28125
+        },
+        {
+          "name": "Cake Care",
+          "height": 44,
+          "width": 81.6484375
+        },
+        {
+          "name": "✓All creations",
+          "height": 44.296875,
+          "width": 145.328125
+        },
+        {
+          "name": "✓Cupcakes",
+          "height": 44.296875,
+          "width": 121.7421875
+        },
+        {
+          "name": "✓Celebration cakes",
+          "height": 44,
+          "width": 184.53125
+        },
+        {
+          "name": "Add to bag +",
+          "height": 47.09375,
+          "width": 343
+        },
+        {
+          "name": "Add to bag +",
+          "height": 47.09375,
+          "width": 343
+        },
+        {
+          "name": "Add to bag +",
+          "height": 47.09375,
+          "width": 343
+        },
+        {
+          "name": "Add to bag +",
+          "height": 47.09375,
+          "width": 343
+        },
+        {
+          "name": "Add to bag +",
+          "height": 47.09375,
+          "width": 343
+        },
+        {
+          "name": "Add to bag +",
+          "height": 47.09375,
+          "width": 343
+        },
+        {
+          "name": "Can I request a personalised design?",
+          "height": 46.390625,
+          "width": 327
+        },
+        {
+          "name": "Are these the final prices?",
+          "height": 46.390625,
+          "width": 327
+        },
+        {
+          "name": "Can I place an order on this website?",
+          "height": 46.390625,
+          "width": 327
+        },
+        {
+          "name": "Cakes",
+          "height": 44,
+          "width": 155.5
+        },
+        {
+          "name": "Cupcakes",
+          "height": 44,
+          "width": 155.5
+        },
+        {
+          "name": "Celebration Sets",
+          "height": 44,
+          "width": 155.5
+        },
+        {
+          "name": "Bespoke",
+          "height": 44,
+          "width": 155.5
+        },
+        {
+          "name": "Cake Care",
+          "height": 44,
+          "width": 155.5
+        },
+        {
+          "name": "FAQ",
+          "height": 44,
+          "width": 155.5
+        },
+        {
+          "name": "Kind Words",
+          "height": 44,
+          "width": 155.5
+        },
+        {
+          "name": "About",
+          "height": 44,
+          "width": 155.5
+        },
+        {
+          "name": "Contact",
+          "height": 44,
+          "width": 155.5
+        },
+        {
+          "name": "Privacy",
+          "height": 44,
+          "width": 155.5
+        },
+        {
+          "name": "Terms",
+          "height": 44,
+          "width": 155.5
+        }
+      ],
+      "productFont": "16px"
+    },
+    {
+      "width": 320,
+      "overflow": false,
+      "logo": {
+        "x": 12,
+        "y": 74.3203125,
+        "width": 144.546875,
+        "height": 39.75,
+        "top": 74.3203125,
+        "right": 156.546875,
+        "bottom": 114.0703125,
+        "left": 12
+      },
+      "story": "rgb(0, 90, 87)",
+      "targets": [
+        {
+          "name": "Shop",
+          "height": 44,
+          "width": 47.03125
+        },
+        {
+          "name": "Bespoke",
+          "height": 44,
+          "width": 70.0078125
+        },
+        {
+          "name": "About",
+          "height": 44,
+          "width": 52.28125
+        },
+        {
+          "name": "Cake Care",
+          "height": 44,
+          "width": 81.6484375
+        },
+        {
+          "name": "✓All creations",
+          "height": 44.296875,
+          "width": 145.328125
+        },
+        {
+          "name": "✓Cupcakes",
+          "height": 44,
+          "width": 121.7421875
+        },
+        {
+          "name": "✓Celebration cakes",
+          "height": 44,
+          "width": 184.53125
+        },
+        {
+          "name": "Add to bag +",
+          "height": 47.09375,
+          "width": 273
+        },
+        {
+          "name": "Add to bag +",
+          "height": 47.09375,
+          "width": 273
+        },
+        {
+          "name": "Add to bag +",
+          "height": 47.09375,
+          "width": 273
+        },
+        {
+          "name": "Add to bag +",
+          "height": 47.09375,
+          "width": 273
+        },
+        {
+          "name": "Add to bag +",
+          "height": 47.09375,
+          "width": 273
+        },
+        {
+          "name": "Add to bag +",
+          "height": 47.09375,
+          "width": 273
+        },
+        {
+          "name": "Can I request a personalised design?",
+          "height": 71.984375,
+          "width": 257
+        },
+        {
+          "name": "Are these the final prices?",
+          "height": 46.390625,
+          "width": 257
+        },
+        {
+          "name": "Can I place an order on this website?",
+          "height": 71.984375,
+          "width": 257
+        },
+        {
+          "name": "Cakes",
+          "height": 44,
+          "width": 120.5
+        },
+        {
+          "name": "Cupcakes",
+          "height": 44,
+          "width": 120.5
+        },
+        {
+          "name": "Celebration Sets",
+          "height": 44,
+          "width": 120.5
+        },
+        {
+          "name": "Bespoke",
+          "height": 44,
+          "width": 120.5
+        },
+        {
+          "name": "Cake Care",
+          "height": 44,
+          "width": 120.5
+        },
+        {
+          "name": "FAQ",
+          "height": 44,
+          "width": 120.5
+        },
+        {
+          "name": "Kind Words",
+          "height": 44,
+          "width": 120.5
+        },
+        {
+          "name": "About",
+          "height": 44,
+          "width": 120.5
+        },
+        {
+          "name": "Contact",
+          "height": 44,
+          "width": 120.5
+        },
+        {
+          "name": "Privacy",
+          "height": 44,
+          "width": 120.5
+        },
+        {
+          "name": "Terms",
+          "height": 44,
+          "width": 120.5
+        }
+      ],
+      "productFont": "16px"
+    }
+  ],
+  "keyboard": {
+    "first": "Skip to cakes",
+    "initialFocus": "Close cart",
+    "inert": true,
+    "lastAfterReverseTab": "Continue to checkout",
+    "wrapped": "Close cart",
+    "restored": "Cart, 1 items"
+  },
+  "errors": [],
+  "dateHelp": "date-help",
+  "inputBorder": "rgb(135, 118, 112)",
+  "zoom": {
+    "overflow": false
+  },
+  "bespoke": {
+    "font": "16px",
+    "border": "rgb(135, 118, 112)",
+    "overflow": false
+  },
+  "forcedColors": "solid"
+}

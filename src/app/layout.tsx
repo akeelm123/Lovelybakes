@@ -19,7 +19,9 @@ export const metadata: Metadata = {
   title: "Lovely Bakes | Celebration Cakes, Beautifully Made",
   description: "Thoughtfully designed celebration cakes and treats, handcrafted for memorable celebrations.",
   alternates: { canonical: "/" },
+  twitter: { card: "summary_large_image", images: ["/brand/social-card.png"] },
   openGraph: {
+    images: [{ url: "/brand/social-card.png", width: 1200, height: 630, alt: "Lovely Bakes — Celebration Cakes" }],
     type: "website",
     locale: "en_SG",
     url: "/",

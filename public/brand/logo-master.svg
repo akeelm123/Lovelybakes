@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 990" role="img" aria-labelledby="title desc">
+<title id="title">Lovely Bakes — refined LB monogram</title><desc id="desc">Interwoven burgundy L and B with a teal ribbon, gold flourishes, a three-petal crown and an integrated gold cake pedestal.</desc>
+<defs>
+ <linearGradient id="ruby" x1="0" y1="0" x2="1" y2=".4"><stop stop-color="#7e0034"/><stop offset=".35" stop-color="#b70048"/><stop offset=".66" stop-color="#df1761"/><stop offset="1" stop-color="#930036"/></linearGradient>
+ <linearGradient id="rubyLight" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#f74688"/><stop offset=".45" stop-color="#c50b50"/><stop offset="1" stop-color="#810032"/></linearGradient>
+ <linearGradient id="gold" x1="0" y1="0" x2=".8" y2="1"><stop stop-color="#87501c"/><stop offset=".19" stop-color="#d3a34e"/><stop offset=".34" stop-color="#fff0b2"/><stop offset=".52" stop-color="#ba7b29"/><stop offset=".73" stop-color="#f6d990"/><stop offset="1" stop-color="#9a5c1b"/></linearGradient>
+ <linearGradient id="teal" x1="0" y1="0" x2="1" y2=".8"><stop stop-color="#005961"/><stop offset=".45" stop-color="#00a2ad"/><stop offset=".7" stop-color="#37c7cb"/><stop offset="1" stop-color="#00636d"/></linearGradient>
+ <linearGradient id="tealLight"><stop stop-color="#b8ece7"/><stop offset="1" stop-color="#008f98"/></linearGradient>
+</defs>
+<!-- Pedestal grows directly from the lower ribbon's gold contour -->
+<g fill="url(#gold)">
+<path d="M456 876 C489 876 521 878 550 884 C539 888 522 897 521 916 C520 935 539 943 568 948 C576 950 578 955 572 958 C529 963 471 963 428 958 C422 955 424 950 432 948 C461 943 480 932 478 914 C476 892 467 884 456 876Z"/>
+<path d="M210 866 C339 891 454 855 565 878 C651 896 740 899 816 876 C764 910 653 912 558 892 C439 867 331 909 210 866Z"/>
+</g>
+<g stroke-linecap="round" stroke-linejoin="round">
+<!-- Crown: individually drawn, tapered petals -->
+<path fill="url(#teal)" d="M501 24 C446 51 470 114 499 175 C513 132 564 69 501 24Z"/>
+<path fill="#60d0d0" opacity=".55" d="M502 30 C536 63 524 111 503 153 C517 92 502 65 502 30Z"/>
+<path fill="url(#ruby)" d="M486 254 C476 181 443 171 409 149 C367 121 401 76 438 106 C467 131 485 182 486 254Z"/>
+<path fill="url(#rubyLight)" d="M406 101 C407 135 449 144 470 189 C454 135 428 105 406 101Z"/>
+<path fill="url(#ruby)" d="M496 254 C500 180 534 162 567 147 C611 126 599 82 565 99 C521 120 505 184 496 254Z"/>
+<path fill="url(#rubyLight)" d="M584 104 C551 119 518 159 507 198 C531 154 568 143 584 104Z"/>
+<!-- Crown gold arabesques -->
+<path fill="url(#gold)" d="M439 420 C493 307 491 225 420 185 C380 162 333 168 334 195 C336 205 351 208 346 198 C338 187 359 189 359 201 C356 226 320 221 321 194 C321 147 382 151 424 176 C503 222 503 319 439 420Z"/>
+<path fill="url(#gold)" d="M497 313 C509 231 553 164 612 161 C659 157 679 185 657 209 C639 224 619 204 634 195 C642 188 650 199 644 201 C665 183 628 170 607 175 C551 181 513 241 497 313Z"/>
+<!-- Outer upper B halo -->
+<path fill="url(#gold)" d="M436 550 C460 389 591 251 700 266 C837 278 880 421 804 523 C865 412 811 288 702 280 C590 270 482 397 436 550Z"/>
+<path fill="url(#tealLight)" d="M484 439 C577 307 729 291 800 369 C822 393 829 422 823 450 C818 401 786 365 746 347 C668 313 565 347 484 439Z"/>
+<!-- Left L -->
+<path fill="url(#ruby)" d="M191 290 C218 252 262 265 428 263 L428 269 C383 271 383 301 383 343 L383 668 L286 612 L286 343 C286 288 263 261 191 290Z"/>
+<path fill="url(#rubyLight)" d="M246 270 C309 269 339 287 340 342 L340 641 L378 663 L378 340 C378 301 383 280 409 269 C345 273 300 268 246 270Z"/>
+<path fill="#8b0034" opacity=".6" d="M339 344 C334 300 309 280 280 275 C299 303 297 328 297 347 L297 615 L339 640Z"/>
+<!-- Lower L foot and connecting flourish -->
+<path fill="url(#ruby)" d="M285 684 L383 742 L383 768 C382 786 388 798 404 803 C345 796 298 860 230 868 C203 873 176 873 158 862 C239 845 286 803 285 737Z"/>
+<path fill="url(#rubyLight)" d="M160 862 C243 853 286 804 350 812 C422 811 491 835 555 856 C470 836 403 819 345 840 C274 866 203 885 160 862Z"/>
+<!-- B main silhouette and bowl counters -->
+<path fill="url(#ruby)" fill-rule="evenodd" d="M493 488 C579 401 650 373 715 391 C826 421 818 526 662 575 C787 558 864 625 865 714 C866 801 791 855 693 851 C624 849 574 818 539 802 C610 825 698 840 742 792 C792 737 761 620 663 587 C640 579 625 579 607 579 L607 735 C607 781 638 794 684 774 C647 814 576 801 500 769 C521 774 527 769 527 742 L527 516 C527 479 516 468 493 488Z M614 409 C646 423 666 450 665 482 C664 517 646 544 620 557 C695 536 734 505 729 461 C725 423 675 396 614 409Z"/>
+<path fill="url(#rubyLight)" d="M536 482 C562 454 585 440 605 430 C583 460 573 482 573 519 L573 733 C573 765 584 780 613 790 C592 790 570 784 548 777 C558 766 558 751 558 725 L558 518 C558 487 551 478 536 482Z"/>
+<path fill="url(#rubyLight)" d="M680 399 C757 411 787 463 753 506 C737 528 706 544 674 555 C740 514 742 447 680 399Z"/>
+<path fill="url(#rubyLight)" d="M713 596 C802 618 849 668 846 733 C843 795 789 835 719 840 C785 816 813 778 811 725 C811 668 776 625 713 596Z"/>
+<!-- Calligraphic rising B stem and curled terminal -->
+<path fill="url(#ruby)" d="M441 609 C415 577 438 507 469 447 C510 367 559 308 620 286 C544 303 485 365 450 437 C422 497 394 604 433 640 C452 658 486 644 482 619 C478 595 450 599 448 616 C453 602 470 609 467 621 C463 635 449 631 441 609Z"/>
+<path fill="url(#rubyLight)" d="M428 550 C451 446 523 340 591 301 C523 357 467 441 428 550Z"/>
+<!-- Fine gold interior counter accents -->
+<path fill="url(#gold)" d="M631 410 C704 436 704 512 647 546 C690 493 679 443 631 410Z"/>
+<path fill="url(#gold)" d="M680 589 C747 615 768 682 747 739 C733 777 704 797 674 799 C741 767 751 656 680 589Z"/>
+<!-- Left upper curl -->
+<path fill="url(#ruby)" d="M57 643 C39 587 96 499 232 507 C132 511 64 564 65 623Z"/>
+<!-- Outer lower gold frame -->
+<path fill="url(#gold)" d="M732 565 C867 548 974 620 976 724 C978 828 868 878 735 881 C867 868 963 821 963 727 C963 630 870 563 732 565Z"/>
+<path fill="url(#teal)" d="M748 581 C841 602 904 663 911 735 C922 824 853 876 750 878 C839 858 885 815 884 751 C884 674 833 612 748 581Z"/>
+<!-- Lower left enclosing gold curl -->
+<path fill="url(#gold)" d="M171 632 C88 614 16 649 20 731 C25 809 97 858 160 837 C215 819 242 760 224 739 C215 728 203 736 212 744 C197 745 190 731 199 722 C220 704 243 731 236 761 C224 812 188 839 149 844 C79 854 11 802 14 727 C16 644 92 608 171 632Z"/>
+<!-- Tiny gold punctuation and pendant -->
+<circle cx="477" cy="694" r="17" fill="url(#gold)"/>
+
+<!-- Sweeping ribbon: continuous tapered silhouette over the letterforms -->
+<path fill="url(#gold)" d="M70 666 C194 586 309 665 435 758 C576 862 692 892 816 876 C670 912 546 867 411 777 C272 684 179 623 70 666Z"/>
+<path fill="url(#teal)" d="M57 650 C171 553 311 635 449 744 C591 856 694 894 816 876 C686 908 564 855 425 760 C281 662 172 588 57 650Z"/>
+<path fill="url(#tealLight)" d="M79 637 C207 570 333 666 454 762 C557 843 650 883 744 886 C632 882 548 836 444 757 C319 661 206 584 79 637Z"/>
+</g></svg>

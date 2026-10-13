@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 
 export const metadata = {
@@ -17,7 +18,7 @@ export default function CakeCarePage() {
   return (
     <main className="cake-care-page">
       <div className="cake-care-intro">
-        <Link href="/">← Back to Lovely Bakes</Link>
+        <Link href="/"><Image unoptimized className="approved-header-logo" src="/brand/logo-header.svg" width={360} height={99} alt="Lovely Bakes home" /></Link>
         <p className="eyebrow">Helpful guidance</p>
         <h1>Cake Care</h1>
         <p>A few thoughtful steps will help your cake look and taste its best, from collection through to the last slice.</p>
