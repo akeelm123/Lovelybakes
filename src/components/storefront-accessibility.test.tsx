@@ -1,0 +1,47 @@
+import React from "react";
+import { afterEach, expect, it, vi } from "vitest";
+import { cleanup, fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { Storefront } from "./storefront";
+import { defaultOrderingRule } from "@/domain/ordering";
+import snapshot from "@/generated/public-snapshot.json";
+import type { Product } from "@/lib/catalog";
+vi.mock("@/analytics/client", () => ({ trackCommerceEvent: vi.fn() }));
+afterEach(() => { cleanup(); localStorage.clear(); vi.unstubAllGlobals(); });
+const products = snapshot.products as Product[];
+it("isolates the cart and restores keyboard focus on Escape", async () => {
+  render(<Storefront products={products} commerceEnabled />);
+  const trigger = screen.getByRole("button", { name: /Cart,/ });
+  trigger.focus(); fireEvent.click(trigger);
+  const close = screen.getByRole("button", { name: "Close cart" });
+  await waitFor(() => expect(close).toHaveFocus());
+  const background = screen.getByRole("main").parentElement!;
+  expect(background.inert).toBe(true);
+  fireEvent.keyDown(close, { key: "Escape" });
+  expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
+  expect(background.inert).toBe(false);
+  expect(trigger).toHaveFocus();
+});
+it("names product actions and associates unavailable date feedback", async () => {
+  render(<Storefront products={products} commerceEnabled orderingRule={{ ...defaultOrderingRule, minimumOrderCents: 0, blackoutDates: ["2027-01-01"] }} />);
+  await waitFor(() => expect(localStorage.getItem("lovelybakes_cart")).not.toBeNull());
+  fireEvent.click(screen.getByRole("button", { name: `Add to bag — ${products[0].name}` }));
+  fireEvent.click(screen.getByRole("button", { name: /Cart,/ }));
+  fireEvent.click(screen.getByRole("button", { name: "Continue to checkout" }));
+  fireEvent.change(screen.getByLabelText("Requested date"), { target: { value: "2027-01-01" } });
+  expect(screen.getByLabelText("Requested date")).toHaveAttribute("aria-invalid", "true");
+  expect(screen.getByLabelText("Requested date")).toHaveAccessibleDescription(/Error: this date is unavailable/);
+  expect(screen.getByRole("button", { name: "Complete checkout preview" })).toBeDisabled();
+});
+it("announces a checkout failure while preserving entered details", async () => {
+  vi.stubGlobal("fetch", vi.fn().mockResolvedValue({ ok: false, json: async () => ({ error: { message: "Checkout unavailable. Please try again." } }) }));
+  render(<Storefront products={products} commerceEnabled checkoutEnabled orderingRule={{ ...defaultOrderingRule, minimumOrderCents: 0 }} />);
+  await waitFor(() => expect(localStorage.getItem("lovelybakes_cart")).not.toBeNull());
+  fireEvent.click(screen.getByRole("button", { name: `Add to bag — ${products[0].name}` }));
+  fireEvent.click(screen.getByRole("button", { name: /Cart,/ }));
+  fireEvent.click(screen.getByRole("button", { name: "Continue to checkout" }));
+  fireEvent.change(screen.getByLabelText("Name"), { target: { value: "Test Customer" } });
+  fireEvent.submit(screen.getByRole("button", { name: "Pay securely with Stripe" }).closest("form")!);
+  expect(await screen.findByRole("alert")).toHaveTextContent("Checkout unavailable");
+  expect(screen.getByLabelText("Name")).toHaveValue("Test Customer");
+  expect(screen.getByRole("button", { name: "Pay securely with Stripe" })).toBeEnabled();
+});

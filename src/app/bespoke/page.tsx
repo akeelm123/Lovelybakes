@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { CakeRequestForm } from "@/components/cake-request-form";
 
@@ -10,7 +11,7 @@ export default function BespokePage() {
   const enabled = process.env.CAKE_REQUEST_INTAKE_ENABLED === "true";
   return <main className="bespoke-page">
     <header className="bespoke-intro">
-      <Link href="/">← Back to Lovely Bakes</Link>
+      <Link href="/"><Image unoptimized className="approved-header-logo" src="/brand/logo-header.svg" width={360} height={99} alt="Lovely Bakes home" /></Link>
       <p className="eyebrow">A cake made for your moment</p>
       <h1>Something beautifully yours.</h1>
       <p>Tell us what you have in mind. We’ll review the details, availability and pricing before your booking is confirmed.</p>

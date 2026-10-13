@@ -397,3 +397,80 @@ body { background: var(--cream); color: var(--ink); }
   .brand-wordmark strong { font-size: 1.45rem; }
   .brand-mark { width: 42px; height: 42px; flex-basis: 42px; }
 }
+
+/* Approved integrated-stand identity and accessibility audit repairs (2026-10-13). */
+:root {
+  --cream: #fffaf2;
+  --paper: #fffaf2;
+  --coral: #99003e;
+  --coral-dark: #790031;
+  --sage: #005a57;
+  --gold: #d5ac62;
+  --muted: #665b57;
+  --control-border: #877670;
+  --error: #9f1239;
+}
+.site-header { grid-template-columns: minmax(240px, 1.2fr) auto auto; background: var(--cream); }
+.brand .approved-header-logo, .approved-header-logo { display: block; width: min(360px, 100%); height: auto; object-fit: contain; border: 0; border-radius: 0; }
+.brand-lockup { min-width: 0; }
+.approved-footer-logo { display: block; max-width: 100%; height: auto; }
+.story-band { background: var(--sage); color: white; }
+.story-band :is(p,h2,a) { color: inherit; }
+:is(a,button,input,textarea,select,summary):focus-visible {
+  outline: 3px solid #151515;
+  outline-offset: 3px;
+  box-shadow: 0 0 0 3px white;
+}
+.field :is(input,textarea,select), .cake-request-fields :is(input,textarea,select) {
+  border: 2px solid var(--control-border);
+  font-size: 1rem;
+  line-height: 1.5;
+  min-height: 44px;
+}
+:is(.primary-button,.secondary-button,.filter-button,.quantity-button,.icon-button,.cart-button,.remove-button) { min-width: 44px; min-height: 44px; }
+:is(.editorial-nav,.header-actions,.footer nav,.admin-header nav) a, .underlined-link {
+  display: inline-flex; align-items: center; min-height: 44px; padding-inline: .4rem;
+}
+.editorial-nav, .header-actions, .admin-header nav { flex-wrap: wrap; }
+.story-band .underlined-link { display: inline-flex; }
+.faq-section details { padding-block: .35rem; }
+.faq-section summary { min-height: 44px; padding-block: .65rem; }
+.product-content p { font-size: 1rem; line-height: 1.6; min-height: 0; }
+.product-content .primary-button, .filter-button { font-size: 1rem; }
+.field label, .preview-label, .price, .badge, .editorial-category-note, .announcement, .notice, .footer p, .editorial-footer-bottom { font-size: .875rem; line-height: 1.5; }
+.price small { font-size: .875rem; }
+.selection-mark { display: inline-block; width: 1.2em; visibility: hidden; }
+[aria-pressed="true"] .selection-mark { visibility: visible; }
+.filter-button[aria-pressed="true"] { font-weight: 800; border: 2px solid currentColor; }
+.product-content .primary-button { border-color: var(--coral); }
+.field-error { color: var(--error); font-weight: 600; }
+[aria-invalid="true"] { border-color: var(--error); }
+.payment-option { min-height: 44px; line-height: 1.5; }
+.footer nav { gap: .25rem; }
+.hero-copy, .product-content, .cart-item > div { min-width: 0; overflow-wrap: anywhere; }
+.drawer-header { gap: .75rem; }
+.drawer-header .icon-button { flex-shrink: 0; }
+.bespoke-intro > a, .cake-care-intro > a { max-width: 100%; }
+@media (max-width: 1000px) {
+  .site-header { grid-template-columns: minmax(0, 1fr) auto; }
+  .editorial-nav { display: none; }
+  .editorial-mobile-nav { display: flex; grid-column: 1/-1; justify-content: space-between; gap: .25rem; overflow: visible; padding: 0; }
+  .editorial-mobile-nav a { color: var(--ink); font-size: .875rem; }
+  .brand .approved-header-logo { width: 260px; height: auto; }
+}
+@media (max-width: 480px) {
+  .site-header { padding: .5rem .75rem; gap: .25rem .5rem; position: relative; }
+  .brand .approved-header-logo { width: 215px; }
+  .cart-button { padding: .65rem .7rem; }
+  .product-grid { grid-template-columns: 1fr; }
+  .product-content h3 { min-height: 0; font-size: 1.6rem; }
+  .product-meta { flex-wrap: wrap; }
+  .product-content .primary-button { font-size: 1rem; }
+  .section-heading { flex-wrap: wrap; }
+  .payment-options { grid-template-columns: 1fr; }
+}
+@media (forced-colors: active) { :focus-visible { outline: 3px solid Highlight; box-shadow: none; } }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } *, *::before, *::after { transition: none !important; animation: none !important; } }
+.brand .approved-header-logo { max-width: 100%; min-width: 0; }
+.editorial-mobile-nav { min-width: 0; }
+@media (max-width: 480px) { .editorial-mobile-nav { gap: 0; } .editorial-mobile-nav a { padding-inline: .3rem; } }

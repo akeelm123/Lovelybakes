@@ -1,0 +1,79 @@
+
+> lovelybakes@0.1.0 build
+> next build
+
+▲ Next.js 16.4.0 (Turbopack)
+✓ Running next.config.ts took 16ms
+
+  Creating an optimized production build ...
+✓ Compiled successfully in 392ms
+  Running TypeScript ...
+  Finished TypeScript in 1331ms ...
+  Collecting page data using 9 workers ...
+  Generating static pages using 9 workers (0/35) ...
+  Generating static pages using 9 workers (8/35) 
+  Generating static pages using 9 workers (17/35) 
+  Generating static pages using 9 workers (26/35) 
+✓ Generating static pages using 9 workers (35/35) in 206ms
+  Finalizing page optimization ...
+
+Route (app)
+┌ ƒ /
+├ ○ /_not-found
+├ ƒ /admin
+├ ƒ /admin/cake-requests
+├ ƒ /admin/content
+├ ƒ /admin/content/preview
+├ ƒ /admin/login
+├ ƒ /admin/notifications
+├ ƒ /admin/operations
+├ ƒ /admin/ordering
+├ ƒ /admin/orders
+├ ƒ /admin/payments
+├ ○ /admin/preview
+├ ƒ /admin/privacy
+├ ƒ /admin/verify
+├ ƒ /api/admin/cake-capacity
+├ ƒ /api/admin/cake-capacity/expire
+├ ƒ /api/admin/cake-capacity/reserve
+├ ƒ /api/admin/cake-database-readiness
+├ ƒ /api/admin/cake-notifications
+├ ƒ /api/admin/cake-payments/quote
+├ ƒ /api/admin/cake-payments/session
+├ ƒ /api/admin/cake-requests
+├ ƒ /api/admin/content
+├ ƒ /api/admin/images
+├ ƒ /api/admin/notifications
+├ ƒ /api/admin/ordering
+├ ƒ /api/admin/orders
+├ ƒ /api/admin/privacy
+├ ƒ /api/admin/products
+├ ƒ /api/auth/callback
+├ ƒ /api/auth/login
+├ ƒ /api/auth/logout
+├ ƒ /api/auth/verify
+├ ƒ /api/cake-payments/webhook
+├ ƒ /api/cake-requests
+├ ƒ /api/checkout
+├ ƒ /api/cron/maintenance
+├ ƒ /api/health
+├ ƒ /api/media/[id]
+├ ƒ /api/products
+├ ƒ /api/stripe/webhook
+├ ƒ /api/uat/readiness
+├ ○ /apple-icon.png
+├ ○ /bespoke
+├ ○ /cake-care
+├ ○ /icon.svg
+├ ƒ /order/confirmation
+├ ○ /privacy
+├ ○ /request/confirmation
+├ ○ /robots.txt
+├ ○ /sitemap.xml
+├ ○ /terms
+└ ƒ /uat
+
+
+○  (Static)   prerendered as static content
+ƒ  (Dynamic)  server-rendered on demand
+
